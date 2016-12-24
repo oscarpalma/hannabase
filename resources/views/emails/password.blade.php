@@ -1,0 +1,1 @@
+Presione <a href="{{ url('password/reset/'.$token) }}" target="_blank">aquí</a> para restaurar su contraseña

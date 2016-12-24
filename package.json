@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "laravel-elixir": "*"
+  },
+  "dependencies": {
+    "parsleyjs": "^2.3.11"
+  }
+}

@@ -1,0 +1,190 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>WOORI</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body >
+		<!-- Tabla para el cliente -->
+<table class='table table-striped table-bordered table-hover dataTable no-footer' border='2' width='100%' rules='rows' style='text-transform:uppercase' id='tablaCliente' hidden=''>
+			<thead>
+				<tr>
+					<th colspan='27' style='background-color: #097054; color: #fff' class='color'></th>
+					<th colspan='3' align='right' style='background-color: #097054; color: #fff' class='color'><center>TOTAL</center></th>
+				</tr>
+
+				<tr>
+					<th colspan='4' style='background-color: #097054; color: #fff' class='color' value='WOORI' id='clienteT'>Cliente: WOORI</th>
+					<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Horario: 07:30:00 A 17:30:00</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>2</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+											<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Personas</th>
+						<th style='background-color: #097054; color: #fff' class='color'>0</th>
+										<th style='background-color: #097054; color: #fff' class='color'>2</th>
+					<th style='background-color: #097054; color: #fff' class='color'>20</th>
+					<th style='background-color: #097054; color: #fff' class='color'>4</th>
+					
+				</tr>
+
+				
+				<tr>
+					<th colspan='4' style='background-color: #097054; color: #fff' class='color'>Semana 28</th>
+					<th colspan='2' style='background-color: #097054; color: #fff' class='color'>Del 11 de Julio  al 17 de Julio del 2016</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Lunes 11</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Martes 12</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Miercoles 13</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Jueves 14</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Viernes 15</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Sabado 16</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Domingo 17</th>
+					<th colspan='3' style='background-color: #097054; color: #fff' class='color'>Total trabajado</th>
+					
+				</tr>
+
+				<tr>
+					<th style='background-color: #097054; color: #fff' class='color'>#</th>
+					<th style='background-color: #097054; color: #fff' class='color'>ID</th>
+					<th style='background-color: #097054; color: #fff' class='color'>A. Paterno</th>
+					<th style='background-color: #097054; color: #fff' class='color'>A. Materno</th>
+					<th style='background-color: #097054; color: #fff' class='color'>Nombre</th>
+					<th style='background-color: #097054; color: #fff' class='color'>Puesto</th>
+					
+
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+											<th style='background-color: #097054; color: #fff' class='color'>C.P</th>
+						<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+						<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+					
+					<th style='background-color: #097054; color: #fff' class='color'>Dias</th>
+					<th style='background-color: #097054; color: #fff' class='color'>R/T</th>
+					<th style='background-color: #097054; color: #fff' class='color'>O/T</th>
+					
+				</tr>
+			</thead>
+
+			<tbody>
+													<tr>
+						<td>1</td>
+						<td>5467</td>
+						<td>BARRERA</td>
+						<td>PEREZ</td>
+						<td>OSMAR</td>
+						<td>OPERADOR</td>
+
+						
+
+						<!--se usara como contador para los dias trabajados-->
+																											<td>WOORI</td>
+								<td>10.00</td>
+								<td>2.00</td>
+																																				<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																			<td>1</td>
+						<td>10</td>
+						<td>2</td>
+								
+					</tr>
+								<tr>
+						<td>2</td>
+						<td>5101</td>
+						<td>GOMES</td>
+						<td>ROBLERO</td>
+						<td>ILSE LESLIE</td>
+						<td>OPERADOR</td>
+
+						
+
+						<!--se usara como contador para los dias trabajados-->
+																											<td>WOORI</td>
+								<td>10.00</td>
+								<td>2.00</td>
+																																				<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																												<td>N/A</td>
+								<td>0</td>
+								<td>0</td>
+																			<td>1</td>
+						<td>10</td>
+						<td>2</td>
+								
+					</tr>
+						</tbody>
+
+		</table>
+
+		<table hidden=''>
+			<thead>
+			<tr></tr>
+				<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+					<th>___________</th>
+					<th>Cometarios</th>
+				</tr>
+				</thead><tbody>
+					<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+
+						<th>Firma</th>
+					</tr>
+				</tbody>
+			
+		</table>
+		</body></html>

@@ -1,0 +1,8 @@
+/vendor
+/bower_components
+/node_modules
+/etc
+.vagrant
+.env
+.idea/
+.DS_Store
