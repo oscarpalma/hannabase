@@ -673,6 +673,70 @@ Route::post('nomina/indicadores', [
 	'as'   => 'indicadores'
 	]);
 
+#### Inventario ####
+
+
+
+Route::get('inventario/alta',[
+	'uses' => 'MaterialController@alta_get',
+	'as'   => 'inventario_alta'
+	]);
+
+Route::post('inventario/alta',[
+	'uses' => 'MaterialController@alta_post',
+	'as'   => 'inventario_alta'
+]);
+
+Route::get('inventario/administrar',[
+	'uses' => 'MaterialController@administrar_get',
+	'as'   => 'inventario_administrar'
+	]);
+Route::post('inventario/administrar',[
+	'uses' => 'MaterialController@administrar_post',
+	'as'   => 'inventario_administrar'
+	]);
+
+Route::get('inventario/cantidad',[
+	'uses' => 'MaterialController@cantidad_get',
+	'as'   => 'inventario_cantidad'
+	]);
+
+Route::post('inventario/cantidad',[
+	'uses' => 'MaterialController@cantidad_post',
+	'as'   => 'inventario_cantidad'
+	]);
+
+Route::get('inventario/lista', [
+	'uses' => 'MaterialController@mostrarInventario',
+	'as'   => 'inventario_lista'
+	]);
+
+Route::get('inventario/eliminar-{id}', [
+	'uses' => 'MaterialController@eliminar',
+	'as'   => 'eliminar_inventario'
+	]);
+
+Route::post('inventario/eliminar-{id}', [
+	'uses' => 'MaterialController@destroy',
+	'as'   => 'eliminar_inventario'
+	]);
+
+Route::post('inventario/actualizar', [
+	'uses' => 'MaterialController@actualizar_post',
+	'as'   => 'actualizar_inventario'
+	]);
+
+## Mejoras en el Sistema Diciembre 2016
+Route::get('empleados/historial', [
+	'uses' => 'EmpleadoController@historial_get',
+	'as'   => 'historial'
+	]);
+
+Route::post('empleados/historial', [
+	'uses' => 'EmpleadoController@historial_post',
+	'as'   => 'historial'
+	]);
+
 #### Ajax para campos dinamicos ####
 Route:: get('/ajax-cliente',function(){
 	$idCliente = Input::get('idCliente');

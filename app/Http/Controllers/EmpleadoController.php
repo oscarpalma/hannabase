@@ -772,4 +772,8 @@ class EmpleadoController extends Controller {
 		//regresa al listado de candidatos
 		return redirect()->route('mostrar_candidatos')->with('error','Se conviertieron ' . $cont . ' empleados inactivos a candidatos');
 	}
+
+	public function historial_get(){
+		return view('empleados/historial');
+	}
 }

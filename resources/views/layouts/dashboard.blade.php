@@ -154,7 +154,9 @@
                                     <li>
                                         <a href="{{route('buscar_empleados')}}" ><i class="fa fa-filter"></i> Consultas</a>
                                     </li> 
-
+                                    <li>
+                                        <a href="{{route('historial')}}" ><i class="fa fa-address-book-o"></i> Historial</a>
+                                    </li>
                                     @if(in_array(Auth::user()->role,['administrador','supervisor']))
                                     <li>
                                         <a href="{{route('nuevaChecada')}}"> <i class="fa fa-plus" ></i> Agregar Checadas</a>
@@ -307,7 +309,27 @@
                                     
                                     
                                 </ul>
-                            </li>    
+                            </li> 
+
+                            <!-- Inventario -->
+                            <li>   
+                                <a href="#"><i class="glyphicon glyphicon-list"></i> Inventario<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_alta')}}"><i class="glyphicon glyphicon-plus"></i> Alta</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_administrar')}}"><i class="glyphicon glyphicon-cog"></i> Administrar</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_cantidad')}}"><i class="glyphicon glyphicon-edit"></i> Actualizar Cantidad</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_lista')}}"><i class="glyphicon glyphicon-edit"></i>Listado de Inventario</a>
+                                    </li>    
+                                    
+                                </ul>
+                            </li>   
  @endif 
                     </ul>
                     <!-- /. navbar-collapse -->
