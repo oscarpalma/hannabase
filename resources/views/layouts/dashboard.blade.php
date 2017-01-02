@@ -246,6 +246,9 @@
                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
                                         <a href="{{route('agregar_cliente')}}"><i class="fa fa-plus"></i> Agregar Clientes</a>
                                     </li>
+                                     <li>
+                                        <a href="{{route('requerimiento')}}" ><i class="fa fa-address-book-o"></i>Requerimiento</a>
+                                    </li>
                                 </ul>
                             </li>
                         @endif
@@ -329,7 +332,7 @@
                                     </li>    
                                     
                                 </ul>
-                            </li>   
+                            </li>  
  @endif 
                     </ul>
                     <!-- /. navbar-collapse -->
