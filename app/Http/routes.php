@@ -737,6 +737,18 @@ Route::post('empleados/historial', [
 	'as'   => 'historial'
 	]);
 
+## Requerimientos por Turno
+Route::get('clientes/requerimiento', [
+	'uses' => 'ClienteController@requerimiento_get',
+	'as'   => 'requerimiento'
+	]);
+
+Route::post('clientes/requerimiento', [
+	'uses' => 'ClienteController@requerimiento_post',
+	'as'   => 'requerimiento'
+	]);
+
+
 #### Ajax para campos dinamicos ####
 Route:: get('/ajax-cliente',function(){
 	$idCliente = Input::get('idCliente');

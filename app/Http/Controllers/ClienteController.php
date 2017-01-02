@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Cliente;
 use App\Turno;
 use Auth;
+use App\Requerimiento;
 
 use Illuminate\Http\Request;
 
@@ -25,8 +26,13 @@ class ClienteController extends Controller {
 		if(Auth::guest())
 			return redirect()->route('login');
 
-		elseif(Auth::user()->role == 'administrador')
+		elseif(Auth::user()->role == 'administrador'){
 			return view('clientes/agregar_cliente');
+			$clientes = Cliente::all();
+			$info = ['clientes' => $clientes];
+			return view('clientes/requerimiento')->with('info',$info);
+
+		}
 		
 		else 
 			return view('errors/restringido');
@@ -39,6 +45,9 @@ class ClienteController extends Controller {
 		else if(Auth::user()->role == 'administrador'){			
 			$clientes = Cliente::all();
 			return view('lista_clientes')->with('clientes',$clientes);
+
+			$info = ['clientes' => $clientes];
+			return view('clientes/requerimiento')->with('info',$info);
 		}
 
 		else
@@ -166,6 +175,50 @@ class ClienteController extends Controller {
 			return view('errors/restringido');
 	}
 
+	##Metodo get para traer lista desplegable de clientes y dirigir a la vista
+	public function requerimiento_get()
+	{
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		elseif(Auth::user()->role == 'administrador'){
+			$clientes = Cliente::all();
+			$info = ['clientes' => $clientes];
+			return view('clientes/requerimiento')->with('info',$info);
+		}
+			
+	}
+
+
+	public function requerimiento_post(Request $request)
+	{
+		//
+		if(Auth::guest())
+				return redirect()->route('login');
+
+		else if(in_array(Auth::user()->role, ['administrador']))
+		{
+			$requerimiento = new Requerimiento([
+
+					'requerimiento' => $request->input('requerimiento'),
+					'ingreso' => $request->input('ingreso'),
+					'fecha_ingreso' => $request->input('fecha_ingreso'),
+					'idcliente' => $request->input('cliente'),
+					'idusuario' => Auth::user()->id
+
+				]);
+
+			$requerimiento->save();
+
+			return redirect()->route('requerimiento')->withInput()->with('mensaje','Registro exitoso');
+
+		}
+		else
+			return view('errors/restringido');
+	}
+
+	
+
 
 	/**
 	 * Store a newly created resource in storage.
@@ -237,6 +290,7 @@ class ClienteController extends Controller {
 
 		else
 			return view('errors/restringido');
+
 	}
 
 }
