@@ -11,6 +11,7 @@ use Validator;
 use App;
 use App\ExamenMedico;
 use App\Checada;
+use App\Cliente;
 use DateTime;
 use Auth;
 
@@ -775,5 +776,59 @@ class EmpleadoController extends Controller {
 
 	public function historial_get(){
 		return view('empleados/historial');
+	}
+
+	public function historial_post(Request $request){
+		if($request->ajax()){
+			$empleado = Empleado::find($request->input('id'));
+	        $datos['nombre']=$empleado->ap_paterno." ".$empleado->ap_materno." ".$empleado->nombres;
+	        $datos['id']=$empleado->idEmpleado;
+	        $fecha= new DateTime($empleado->fecha_nacimiento);
+	        $datos['fecha']=$fecha->format('d-m-Y');
+	        $datos['curp']=$empleado->curp;
+	        $datos['imss']=$empleado->imss;
+	        $datos['cuenta']=$empleado->no_cuenta;
+	        $datos['rfc']=$empleado->rfc;
+	        $datos['perfil']= strtoupper($empleado->tipo_perfil);
+	        $datos['visa']=ucwords($empleado->visa);
+	        $datos['foto']=$empleado->foto;
+	        
+	        //Obtener nombre de estado
+	        $idestado=$empleado->idestado;
+	        $estado = Estado::find($idestado);
+	        $datos['estado']=$estado->nombre;
+	        //Obtener datos de localización
+	        $datosLocalizacion = DatosLocalizacion::where('idEmpleado',$empleado->idEmpleado)->first();
+	    	$datos['telefono']=$datosLocalizacion->tel_casa." ".$datosLocalizacion->tel_cel;
+	    	$colonia=Colonia::find($datosLocalizacion->idColonia);
+	    	$datos['direccion']=strtoupper($datosLocalizacion->calle." ".$datosLocalizacion->no_exterior." ".$datosLocalizacion->no_interior." ".$colonia->nombre);
+	    	$datos['contacto']="Llamar a ".ucwords($datosLocalizacion->nombre_contacto)." al telefono ".$datosLocalizacion->tel_contacto;
+	    	
+	    	//obtener empresas y fecha de ingreso
+	    	$primeraChecada=Checada::where('idEmpleado',$empleado->idEmpleado)->first();
+	    	if($primeraChecada!=null){
+		    	$fechaI= new DateTime($primeraChecada->fecha);
+		    	$datos['fechaI']=$fechaI->format('d-m-Y');
+
+		    	$empresas = array();
+		    	$diasPorSemanaA = array();
+		    	$i=1;
+		    	$checadas = Checada::distinct()->where('idEmpleado',$empleado->idEmpleado)->get(['idCliente'])->orderBy('fecha');
+		    	foreach ($checadas as $checada) {
+		    		$empresa['nombre']=Cliente::where('idCliente',$checada->idCliente)->first(['nombre']);
+		    		$empresa['dias']=Checada::where('idCliente',$checada->idCliente)->where('idEmpleado',$empleado->idEmpleado)->count();
+		    		$fecha = new DateTime($checada->fecha);
+		    		 
+		    		array_push($empresas, $empresa);
+		    		array_push($diasPorSemanaA, $fecha->format('W'));
+		    	}
+		    	$datos['empresas']=$empresas;
+		    	$datos['diasPorSemana']=$diasPorSemanaA;
+		    }else
+		    	$datos['sinChecada']=true;
+	    return json_encode($datos);
+    }else{
+    	return json_encode(false);
+    	}
 	}
 }

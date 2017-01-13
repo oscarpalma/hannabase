@@ -15157,7 +15157,7 @@ $(function() {
 });
 
 
-var lineChartData = {
+/*var lineChartData = {
     labels : ["January","February","March","April","May","June","July"],
     datasets : [
         {
@@ -15320,5 +15320,5 @@ new Chart(cpolar).PolarArea(podata, { responsive: true});
                     }
                 ]
                 var cdonut1 = document.getElementById("cdonut1").getContext("2d");
-                new Chart(cdonut1).Doughnut(ddata1, { responsive: true});
+                new Chart(cdonut1).Doughnut(ddata1, { responsive: true});**/
 //# sourceMappingURL=frontend.js.map
