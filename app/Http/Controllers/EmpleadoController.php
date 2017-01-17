@@ -803,7 +803,7 @@ class EmpleadoController extends Controller {
 	    	$colonia=Colonia::find($datosLocalizacion->idColonia);
 	    	$datos['direccion']=strtoupper($datosLocalizacion->calle." ".$datosLocalizacion->no_exterior." ".$datosLocalizacion->no_interior." ".$colonia->nombre);
 	    	$datos['contacto']="Llamar a ".ucwords($datosLocalizacion->nombre_contacto)." al telefono ".$datosLocalizacion->tel_contacto;
-	    	
+	    	 
 	    	//obtener empresas y fecha de ingreso
 	    	$primeraChecada=Checada::where('idEmpleado',$empleado->idEmpleado)->first();
 	    	if($primeraChecada!=null){
@@ -812,11 +812,15 @@ class EmpleadoController extends Controller {
 
 		    	$empresas = array();
 		    	$diasPorSemanaA = array();
-		    	$i=1;
+		    	return json_encode($datos);
 		    	$checadas = Checada::distinct()->where('idEmpleado',$empleado->idEmpleado)->get(['idCliente'])->orderBy('fecha');
+		    	
 		    	foreach ($checadas as $checada) {
+
 		    		$empresa['nombre']=Cliente::where('idCliente',$checada->idCliente)->first(['nombre']);
+
 		    		$empresa['dias']=Checada::where('idCliente',$checada->idCliente)->where('idEmpleado',$empleado->idEmpleado)->count();
+		    		
 		    		$fecha = new DateTime($checada->fecha);
 		    		 
 		    		array_push($empresas, $empresa);

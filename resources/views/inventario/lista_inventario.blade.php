@@ -1,5 +1,15 @@
 @extends('layouts.dashboard')
 @section('page_heading','Lista de Inventario')
+@section('head')
+
+<script src="{{ asset('assets/scripts/barcode/JsBarcode.all.js') }}"></script>
+<script type="text/javascript">
+ function codigo(id, codigo){
+ 	JsBarcode("#barcode"+id,codigo );
+ }
+	
+</script>
+@stop
 @section('section')
            
 <div class="container-fluid">
@@ -16,6 +26,7 @@
 			<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase'>
 			    <tr>
 			        <th>ID</th>
+			        <th>Codigo</th>
 			        <th>Nombre</th>
 			        <th>Modelo</th>
 			        <th>Marca</th>
@@ -27,6 +38,7 @@
 			    @foreach($inventario as $material) 
 				        <tr>
 				            <td>{{$material->id}}</td>
+				            <td ><img id="barcode{{$material->id}}"/><script type="text/javascript"> codigo({{$material->id}},{{$material->codigoBarras}});</script></td>
 				            <td >{{$material->nombre}}</td>
 				            <td >{{$material->modelo}}</td>
 				            <td>{{$material->marca}}</td>

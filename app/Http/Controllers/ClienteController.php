@@ -6,7 +6,7 @@ use App\Cliente;
 use App\Turno;
 use Auth;
 use App\Requerimiento;
-
+use DateTime;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller {
@@ -198,11 +198,13 @@ class ClienteController extends Controller {
 
 		else if(in_array(Auth::user()->role, ['administrador']))
 		{
+			$fecha = new DateTime($request->input('fecha_ingreso'));
 			$requerimiento = new Requerimiento([
 
 					'requerimiento' => $request->input('requerimiento'),
 					'ingreso' => $request->input('ingreso'),
-					'fecha_ingreso' => $request->input('fecha_ingreso'),
+					'fecha_ingreso' => $fecha,
+					'semana' => $fecha->format('W'),
 					'idcliente' => $request->input('cliente'),
 					'idusuario' => Auth::user()->id
 
