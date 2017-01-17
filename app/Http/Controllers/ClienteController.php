@@ -8,7 +8,6 @@ use Auth;
 use DateTime;
 use DateInterval;
 use App\Requerimiento;
-use DateTime;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller {
@@ -48,8 +47,7 @@ class ClienteController extends Controller {
 			$clientes = Cliente::all();
 			return view('lista_clientes')->with('clientes',$clientes);
 
-			$info = ['clientes' => $clientes];
-			return view('clientes/requerimiento')->with('info',$info);
+			
 		}
 
 		else
