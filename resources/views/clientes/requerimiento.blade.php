@@ -69,6 +69,7 @@
 				</div>
 				</div>
 				<div class="form-group">
+				<br>
 				    <center>
 						<button type="submit" class="btn btn-primary" value="validate" style="margin-right: 15px;">
 							Registrar

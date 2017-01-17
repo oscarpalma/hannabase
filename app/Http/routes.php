@@ -737,7 +737,7 @@ Route::post('empleados/historial', [
 	'as'   => 'historial'
 	]);
 
-## Requerimientos por Turno
+## Requerimientos por Cliente
 Route::get('clientes/requerimiento', [
 	'uses' => 'ClienteController@requerimiento_get',
 	'as'   => 'requerimiento'
@@ -746,6 +746,21 @@ Route::get('clientes/requerimiento', [
 Route::post('clientes/requerimiento', [
 	'uses' => 'ClienteController@requerimiento_post',
 	'as'   => 'requerimiento'
+	]);
+
+Route::get('clientes/reporte', [
+	'uses' => 'ClienteController@buscarReporte',
+	'as'   => 'clientes/reporte'
+	]);
+
+Route::post('clientes/reporte', [
+	'uses' => 'ClienteController@generarReporte',
+	'as'   => 'clientes/reporte'
+	]);
+
+Route::get('clientes/detalle/reporte', [
+	'uses' => 'ClienteController@detalleReporte',
+	'as'   => 'clientes/imprimir_reporte' //cambie el nombre de la ruta
 	]);
 
 
