@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Cliente;
 use App\Turno;
 use Auth;
+use DateTime;
+use DateInterval;
 use App\Requerimiento;
 
 use Illuminate\Http\Request;
@@ -218,6 +220,184 @@ class ClienteController extends Controller {
 	}
 
 	
+	//abrir la vista para reporte arrojando los clientes existentes
+	public function buscarReporte()
+	{
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		elseif(Auth::user()->role == 'administrador'){
+			$clientes = Cliente::all();
+			$info = ['clientes' => $clientes];
+			return view('clientes/reporte')->with('info',$info);
+		}
+	}
+	
+	//Con los parametros especificados muestra el resultado de la busqueda
+	public function generarReporte(Request $request)
+	{
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		else if(in_array(Auth::user()->role, ['administrador','supervisor'])){
+
+			// return view('proveedores/detalle_reporte');		
+			$idcliente = $request->input('idcliente');
+			$forma = $request->input('por');
+			$semana = $request->input("valor");
+			$year = new DateTime(); //en ingles para no sonar obsceno
+
+			//Obtener la fecha en la que inicia y termina la semana seleccionada
+			$fecha1 = new DateTime();
+			$fecha1->setISODate($year->format('Y'),$semana,1);
+			$fecha1 = $fecha1->format('Y-m-d');
+
+			$fecha2 = new DateTime();
+			$fecha2->setISODate($year->format('Y'),$semana,7);
+			$fecha2 = $fecha2->format('Y-m-d');
+
+			//declarar el query en formato SQL para cada uno de los parametros, como un string
+			//el string siguiente seria "fecha BETWEEN CAST('{fecha1}' AS DATE) AND CAST('{fecha2}' AS DATE)"
+			
+
+			//queryFechas se encarga de delimitar el periodo de tiempo
+			if($forma == 'semana')
+				$queryFechas = "fecha_ingreso BETWEEN CAST('" . $fecha1 . "' AS DATE) AND CAST('" . $fecha2 . "' AS DATE)";
+
+			elseif($forma == 'mes'){
+				$fechaActual = new DateTime('now');
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				//el primer dia del mes dado
+				$fecha1->setDate($fechaActual->format('Y'),$request->input('valor'),1); 
+				
+				//el primer dia del siguiente mes
+				if($request->input('valor') == 12)
+					//si es diciembre, tomar enero como el siguiente dia
+					$fecha2 = setDate(($fechaActual->format('Y')+1), 1, 1);
+				
+				else
+					$fecha2->setDate($fechaActual->format('Y'),($request->input('valor')+1),1); 
+
+				//restar un dia a la segunda fecha para que sea el ultimo dia del mes
+				$fecha2->sub(new DateInterval('P1D'));
+
+
+			$queryFechas = "fecha_ingreso BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			else {//año
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				$year = $request->input('valor');
+
+				$fecha1->setDate($year,1,1); //primer dia del año
+				$fecha2->setDate($year,12,31); //ultimo dia del año
+				
+				$queryFechas = "fecha_ingreso BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			//si no especifica cliente, ignorar del query
+			if($idcliente == 'todos'){
+				$queryCliente = "";
+			}
+
+			else
+				$queryCliente = " AND idcliente = '" . $request->input('cliente') . "'";
+
+			$requerimientos = Requerimiento::whereRaw($queryFechas.$queryCliente)->	orderBy('fecha_ingreso')->get();
+
+
+			$ingreso=0;
+			
+			foreach ($requerimientos as $requerimiento) {
+				$ingreso += $requerimiento->ingreso;
+			}
+			
+			$clientes = Cliente::all();
+			$idcliente = Cliente::where('idcliente', $idcliente)->first();
+			$info = ['clientes' => $clientes, 'requerimientos'=>$requerimientos, 'ingreso'=>$ingreso]; //parametros para filtrar la busqueda
+			return view('clientes/reporte')->with('info',$info);	
+		}
+
+		else
+			return view('errors/restringido');
+	}
+	
+
+	public function detalleReporte(Request $request)
+	{
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		else if(in_array(Auth::user()->role, ['administrador','supervisor'])){
+
+			// return view('proveedores/detalle_reporte');		
+			$idcliente = $request->input('idcliente');
+			$forma = $request->input('por');
+
+			//queryFechas se encarga de delimitar el periodo de tiempo
+			if($forma == 'fecha_ingreso')
+				$queryFechas = "fecha_ingreso = '" . $request->input('valor') . "'";
+
+			elseif($forma == 'mes'){
+				$fechaActual = new DateTime('now');
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				//el primer dia del mes dado
+				$fecha1->setDate($fechaActual->format('Y'),$request->input('valor'),1); 
+				
+				//el primer dia del siguiente mes
+				if($request->input('valor') == 12)
+					//si es diciembre, tomar enero como el siguiente dia
+					$fecha2 = setDate(($fechaActual->format('Y')+1), 1, 1);
+				
+				else
+					$fecha2->setDate($fechaActual->format('Y'),($request->input('valor')+1),1); 
+
+				//restar un dia a la segunda fecha para que sea el ultimo dia del mes
+				$fecha2->sub(new DateInterval('P1D'));
+
+
+			$queryFechas = "fecha_ingreso BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			else {//año
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				$year = $request->input('valor');
+
+				$fecha1->setDate($year,1,1); //primer dia del año
+				$fecha2->setDate($year,12,31); //ultimo dia del año
+				
+				$queryFechas = "fecha_ingreso BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			//si no especifica cliente, ignorar del query
+			if($idcliente == 'todos'){
+				$queryCliente = "";
+			}
+
+			else
+				$queryCliente = " AND idcliente = '" . $request->input('idcliente') . "'";
+
+			$requerimientos = Requerimiento::whereRaw($queryFechas.$queryCliente)->	orderBy('fecha_ingreso')->get();
+
+
+			$total_cargo=0;
+			$total_abono=0;
+			$total_saldo=0;
+			
+			
+			$clientes = Cliente::all();
+			$idcliente = Cliente::where('idcliente', $idcliente)->first();
+			$info = ['clientes' => $clientes, 'requerimientos'=>$requerimientos,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo]; //parametros para filtrar la busqueda
+			return view('clientes/detalle_reporte')->with('info',$info);	
+		}
+
+		else
+			return view('errors/restringido');
+	}
 
 
 	/**

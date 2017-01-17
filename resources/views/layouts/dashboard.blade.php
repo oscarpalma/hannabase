@@ -247,7 +247,10 @@
                                         <a href="{{route('agregar_cliente')}}"><i class="fa fa-plus"></i> Agregar Clientes</a>
                                     </li>
                                      <li>
-                                        <a href="{{route('requerimiento')}}" ><i class="fa fa-address-book-o"></i>Requerimiento</a>
+                                        <a href="{{route('requerimiento')}}" ><i class="fa fa-address-book-o"></i>Ingresar Requerimiento</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('clientes/reporte')}}"><i class="fa fa-plus"></i>Generar Reporte</a>
                                     </li>
                                 </ul>
                             </li>
