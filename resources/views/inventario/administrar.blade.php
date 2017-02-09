@@ -63,11 +63,7 @@
 				<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong> El codigo ingresado no coincide con ningun material registrado! 
 				
 			</div>
-			<div class="alert alert-success alert-dismissible" role="alert" id="success" hidden="">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong><span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span></strong> Material actualizado exitosamente 
-				
-			</div>
+			
 		<div class="panel panel-primary" hidden="" id="material">
 			<div class="panel-heading"><strong>Material</strong></div>
 			<div class="panel-body">

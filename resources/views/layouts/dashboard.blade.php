@@ -341,6 +341,25 @@
                                     
                                 </ul>
                             </li>  
+
+                            <li>   
+                                <a href="#"><i class="glyphicon glyphicon-list"></i> KPI<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('tipo_kpi')}}"><i class="glyphicon glyphicon-plus"></i> Alta Tipo KPI</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('logro')}}"><i class="glyphicon glyphicon-cog"></i> Alta Logro</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_cantidad')}}"><i class="glyphicon glyphicon-edit"></i> Actualizar Cantidad</a>
+                                    </li>
+                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
+                                        <a href="{{route('inventario_lista')}}"><i class="glyphicon glyphicon-edit"></i>Listado de Inventario</a>
+                                    </li>    
+                                    
+                                </ul>
+                            </li>  
  @endif 
                     </ul>
                     <!-- /. navbar-collapse -->

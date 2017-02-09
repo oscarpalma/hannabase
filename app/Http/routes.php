@@ -866,3 +866,8 @@ Route::post('kpi/alta/logro', [
 	'uses' => 'KpiController@alta_logro_post',
 	'as'   => 'logro'
 	]);
+
+Route::get('kpi/obtenerLogros', [
+	'uses' => 'KpiController@obtener_tipoKpi_ajax',
+	'as'   => 'obtener_logros_ajax'
+	]);

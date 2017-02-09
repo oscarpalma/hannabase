@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\AreaCt;
 use App\tipoKpi;
+use App\logro;
+use DateTime;
 class KpiController extends Controller {
 
 	/**
@@ -38,11 +40,32 @@ class KpiController extends Controller {
 		return view('kpi/alta_logro')->with('areas',$areas);
 	}
 
-	public function alta_logro_post()
+	public function alta_logro_post(Request $request)
 	{
-		//
+		$fecha = new DateTime($request->input('fecha'));
+
+		$logro = new logro([
+				'plan' => $request->input('plan'),
+				'actual' => $request->input('actual'),
+				'fecha' => $fecha,
+				'semana' => $fecha->format('W'),
+				'pk_idTipoKpi' => $request->input('tipo')
+			]);
+
+		$logro->save();
+
+		return redirect('kpi/alta/logro')->with('success','Guardado exitosamente!');
 	}
 
+	public function obtener_tipoKpi_ajax(Request $request)
+	{
+		if($request->ajax()){
+			$tipos = tipoKpi::where('pk_idAreaCt',$request->input('id'))->get();
+			return json_encode($tipos);
+		}else{
+			return response('No autorizado.', 401);
+		}	
+	}
 
 
 	/**

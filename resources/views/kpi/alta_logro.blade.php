@@ -5,15 +5,18 @@
 @stop
 @section('section')
 
-@if(Session::has('message'))
-	<script type="text/javascript">
-		window.onload = function(){ alert("{{Session::get('message')}}");}
-	</script>
-@endif
+@if(Session::has('success'))
+	
 
-<form class="form-horizontal" role="form" method="POST" action="{{ route('reporte') }}" id="buscar_checada">
+<div class="alert alert-success alert-dismissible" role="alert" id="success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong><span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span></strong> {{Session::get('success')}}
+				
+			</div>
+@endif
+<form class="form-horizontal" role="form" method="POST" action="{{ route('logro') }}" id="imprimir">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><strong>Buscar</strong></div>
+		<div class="panel-heading"><strong></strong></div>
 		<div class="panel-body">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 			<div class="row-sm">					
@@ -24,7 +27,7 @@
 				<div class="col-sm-3">
 					<label class="control-label">Area <text style="color:red">*</text></label>
 					<div>
-						<select class="form-control" id="area" name="area" >
+						<select class="form-control" id="area" name="area" required="">
 							<!--en caso de no especificar ninguno-->
 							<option value="">Seleccione</option>
 							@foreach($areas as $area)
@@ -37,9 +40,9 @@
 				<div class="col-sm-3">
 					<label class="control-label">Tipo Kpi <text style="color:red">*</text></label>
 					<div>
-						<select class="form-control" name="tipo" id="tipo">
+						<select class="form-control" name="tipo" id="tipo" required="">
 							<!--en caso de no especificar ninguno-->
-							<option value="">Seleccione</option>
+							<option value="">-------</option>
 							
 						</select>
 					</div>
@@ -66,16 +69,7 @@
 						<input class="form-control" type="date" name="fecha" required="">
 					</div>
 				</div>
-				<div class="col-sm-3">
-					<label class="control-label">Semana <text style="color:red">*</text></label>
-					<div>
-						<select class="form-control" name="semana" >
-							@for($i = 1; $i<=Date('W'); $i++)
-								<option value="{{$i}}">Semana {{$i}}</option>
-							@endfor
-						</select>
-					</div>
-				</div>
+				
 
 				
 
@@ -85,6 +79,12 @@
 						<button type="submit" class="btn btn-primary" value="validate" style="margin-right: 15px;">
 							Guardar
 						</button>
+						<input id="btn-Preview-Image" type="button" value="Preview"/>
+    <a id="btn-Convert-Html2Image" href="#">Download</a>
+    <br/>
+    <h3>Preview :</h3>
+    <div id="previewImage">
+    </div>
 					</center>
 				</div>
 
@@ -153,31 +153,57 @@ window.onload = function(){
  		$("#empleado").select2();
 		$("#cliente").select2();
 
-	$('#cliente').on('change', function(e){
-    console.log(e);
-    var idCliente = e.target.value;
-	$("#cliente option[value='null']").hide();
+	$('#area').on('change', function(e){
+    
+    var idAreaCt = e.target.value;
+	//$("#tipo option[value='null']").hide();
 	
-    if($("#cliente").val() != "null"){
+    
 
-	    $.get('/ajax-cliente?idCliente=' + idCliente, function(data) {
-	    	//console.log(data);
+	   
 
-	    	//Muestra los turnos segun el cliente que se ha seleccionado
-	       	$('#turno').empty();
-	       	$.each(data,function(index,turnosObj){
-	       	$('#turno').append('<option value="'+turnosObj.idTurno+'">'+turnosObj.hora_entrada+" - "+turnosObj.hora_salida+'</option>');
-	       	});
+	     $.ajax({
+		            type: "GET",
+		            url: "{{ URL::to('kpi/obtenerLogros') }}",
+		            data: { id:idAreaCt},
+		            dataType: "json",
+		            cache : false,
+		            success: function(data){
+		            	$('#tipo').empty();
+		              	if(data.length>0){		              		   	
+		       		    	$('#tipo').append('<option value="">Seleccione</option>');
+					       	$.each(data,function(index,tiposObj){
+					       		$('#tipo').append('<option value="'+tiposObj.idTipoKpi+'">'+tiposObj.nombre+'</option>');
+					       		
+					       	});
+			       		}else{
+			       			$('#tipo').append('<option value="">-------</option>');
+			       		}
+		          
+		            } ,error: function(xhr, status, error) {
+		              alert(error);
+		            },
 
-	    });
-	}
-
-	else{
-		$('#turno').empty();
-	}
+		        });
+	
 });
     });
+$(function() { 
+    $("#btnSave").click(function() { 
+        html2canvas($("#widget"), {
+            onrendered: function(canvas) {
+                theCanvas = canvas;
+                document.body.appendChild(canvas);
 
+                // Convert and download as image 
+                Canvas2Image.saveAsPNG(canvas); 
+                $("#img-out").append(canvas);
+                // Clean up 
+                //document.body.removeChild(canvas);
+            }
+        });
+    });
+}); 
    
 </script>
 
@@ -187,7 +213,37 @@ window.onload = function(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="{{ asset("assets/scripts/jquery.btechco.excelexport.js") }}" type="text/javascript"></script>
     <script src="{{ asset("assets/scripts/jquery.base64.js") }}" type="text/javascript"></script>
+     <script src="{{ asset("assets/scripts/html2canvas.js") }}" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
 
+	
+var element = $("#imprimir"); // global variable
+var getCanvas; // global variable
+ 
+    $("#btn-Preview-Image").on('click', function () {
+         html2canvas(element, {
+         onrendered: function (canvas) {
+                $("#previewImage").html(canvas);
+                getCanvas = canvas;
+                var imgageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    $("#btn-Preview-Image").attr("download", "your_pic_name.png").attr("href", newData);
+             }
+         });
+          
+    });
 
+	$("#btn-Convert-Html2Image").on('click', function () {
+    var imgageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    $("#btn-Convert-Html2Image").attr("download", "your_pic_name.png").attr("href", newData);
+	});
+
+});
+
+</script>
     @stop
 @stop
