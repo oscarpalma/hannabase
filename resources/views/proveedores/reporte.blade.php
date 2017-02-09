@@ -192,7 +192,7 @@
 						<td>{{$transaccion->cheque}}</td>
 								
 					</tr>
-			@endforeach
+				@endforeach
 				<tr>
 						<td></td>
 						<td></td>
@@ -382,176 +382,174 @@ var bdata = {
     });
 
     @if(isset($i))
-    function imprimir(){
-var cbarr = document.getElementById("cbar");
+	    function imprimir(){
+			var cbarr = document.getElementById("cbar");
 
-var imgData = cbarr.toDataURL("");
+			var imgData = cbarr.toDataURL("");
 
-var doc = new jsPDF('landscape','pt','letter' ,'p');
+			var doc = new jsPDF('landscape','pt','letter' ,'p');
 
-doc.setFontSize(8);
-doc.text(295, 50, "CORE RESOURCES TRADING AND MANAGEMENT S DE RL DE CV",0);
-doc.text(305, 60, "ACAD-09 HISTORIAL DE FACTURAS DE PROVEEDORES",0);
-doc.text(10, 70, "PROVEEDOR: {{strtoupper($parametros['proveedor']->nombre)}}",0);
-doc.text(10, 80, "CONTACTO: {{strtoupper($parametros['proveedor']->contacto)}}",0);
-doc.text(10, 90, "TELEFONO: {{strtoupper($parametros['proveedor']->telefono)}}",0);
-doc.text(10, 100, "EMAIL: {{strtoupper($parametros['proveedor']->email)}}",0);
-doc.text(10, 110, "CREDITO: {{strtoupper($parametros['proveedor']->credito)}}",0);
-doc.addImage(imgData, 250, 80, 330, 120);
-//var columns = ["#", "FACTURA", "PROVEEDOR","CONCEPTO", "WEEK", "ISSUE DATE", "DUE DATE", "CARGO", "ABONO", "SALDO","PROG DE PAGO","FECHA DE PAGO","#CHEQUE"];
-var columns = [
-    {title: "ID", dataKey: "id"},
-    {title: "FACTURA", dataKey: "factura"}, 
-    
-    {title: "CONCEPTO", dataKey: "concepto"},
-    {title: "WEEK", dataKey: "week"},
-    {title: "ISSUE DATE", dataKey: "issue"},
-    {title: "DUE DATE", dataKey: "due"},
-    {title: "CARGO", dataKey: "cargo"},
-    {title: "ABONO", dataKey: "abono"},
-    {title: "SALDO", dataKey: "saldo"},
-    {title: "PROG DE PAGO", dataKey: "progdepago"},
-    {title: "FECHA DE PAGO", dataKey: "fechapago"},
-    {title: "CHEQUE", dataKey: "cheque"}
-   
-];
+			doc.setFontSize(8);
+			doc.text(295, 50, "CORE RESOURCES TRADING AND MANAGEMENT S DE RL DE CV",0);
+			doc.text(305, 60, "ACAD-09 HISTORIAL DE FACTURAS DE PROVEEDORES",0);
+			doc.text(10, 70, "PROVEEDOR: {{strtoupper($parametros['proveedor']->nombre)}}",0);
+			doc.text(10, 80, "CONTACTO: {{strtoupper($parametros['proveedor']->contacto)}}",0);
+			doc.text(10, 90, "TELEFONO: {{strtoupper($parametros['proveedor']->telefono)}}",0);
+			doc.text(10, 100, "EMAIL: {{strtoupper($parametros['proveedor']->email)}}",0);
+			doc.text(10, 110, "CREDITO: {{strtoupper($parametros['proveedor']->credito)}}",0);
+			doc.addImage(imgData, 250, 80, 330, 120);
+			//var columns = ["#", "FACTURA", "PROVEEDOR","CONCEPTO", "WEEK", "ISSUE DATE", "DUE DATE", "CARGO", "ABONO", "SALDO","PROG DE PAGO","FECHA DE PAGO","#CHEQUE"];
+			var columns = [
+			    {title: "ID", dataKey: "id"},
+			    {title: "FACTURA", dataKey: "factura"}, 
+			    
+			    {title: "CONCEPTO", dataKey: "concepto"},
+			    {title: "WEEK", dataKey: "week"},
+			    {title: "ISSUE DATE", dataKey: "issue"},
+			    {title: "DUE DATE", dataKey: "due"},
+			    {title: "CARGO", dataKey: "cargo"},
+			    {title: "ABONO", dataKey: "abono"},
+			    {title: "SALDO", dataKey: "saldo"},
+			    {title: "PROG DE PAGO", dataKey: "progdepago"},
+			    {title: "FECHA DE PAGO", dataKey: "fechapago"},
+			    {title: "CHEQUE", dataKey: "cheque"}
+			   
+			];
 
-var datos=[];
-var cargos=[];
-var rows = [];
-var i=1;
-@foreach ($parametros['transacciones'] as $transaccion)
-		rows.push( {"id": i, "factura" : "{{$transaccion->factura}}", "concepto": "{{$transaccion->concepto}}", "week": "{{$transaccion->semana}}", "issue":"{{$transaccion->fecha_captura}}", "due":"{{$transaccion->fecha_agendada}}", "cargo":"$ {{number_format($transaccion->cargo,2)}}","abono":"$ {{number_format($transaccion->abono,2)}}","saldo":"$ {{number_format($transaccion->saldo,2)}}","progdepago":"{{$transaccion->fecha_programada}}","fechapago":"{{$transaccion->fecha_traspaso}}","cheque":"{{$transaccion->cheque}}"});
-		i= i+1;
-		
-@endforeach
-rows.push( {"id": "", "factura" : "", "concepto": "", "week": "", "issue":"", "due":"TOTAL", "cargo":"$ {{number_format($parametros['total_cargo'],2)}}","abono":"$ {{number_format($parametros['total_abono'],2)}}","saldo":"$ {{number_format($parametros['total_saldo'],2)}}","progdepago":"","fechapago":"","cheque":""});
+			var datos=[];
+			var cargos=[];
+			var rows = [];
+			var i=1;
+			@foreach ($parametros['transacciones'] as $transaccion)
+					rows.push( {"id": i, "factura" : "{{$transaccion->factura}}", "concepto": "{{$transaccion->concepto}}", "week": "{{$transaccion->semana}}", "issue":"{{$transaccion->fecha_captura}}", "due":"{{$transaccion->fecha_agendada}}", "cargo":"$ {{number_format($transaccion->cargo,2)}}","abono":"$ {{number_format($transaccion->abono,2)}}","saldo":"$ {{number_format($transaccion->saldo,2)}}","progdepago":"{{$transaccion->fecha_programada}}","fechapago":"{{$transaccion->fecha_traspaso}}","cheque":"{{$transaccion->cheque}}"});
+					i= i+1;
+					
+			@endforeach
+			rows.push( {"id": "", "factura" : "", "concepto": "", "week": "", "issue":"", "due":"TOTAL", "cargo":"$ {{number_format($parametros['total_cargo'],2)}}","abono":"$ {{number_format($parametros['total_abono'],2)}}","saldo":"$ {{number_format($parametros['total_saldo'],2)}}","progdepago":"","fechapago":"","cheque":""});
 
-    
-var options ;
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 8,
-    lineHeight: 15,
-    theme: 'grid',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    renderHeaderCell: function (x, y, width, height, key, value, settings) {
-        doc.setFillColor(52, 73, 94); // Asphalt
-        doc.setTextColor(255, 255, 255);
-        doc.setFontStyle('bold');
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    margin: {  top: 220 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
-var columns = [
-    {title: "PREPARADO", dataKey: "preparado"},
-    {title: "GERENTE GRAL.", dataKey: "gerente"}, 
-    
-    {title: "DIRECTOR", dataKey: "director"},
-    {title: "PRESIDENTE", dataKey: "presidente"},
-    
-   
-];
-var rows = [
-    { "PREPARADO": "     ",
-    "GERENTE GRAL.": " ", 
-    
-    "DIRECTOR": "  ",
-     "PRESIDENTE": "  "},
-    
-   
-];
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 10,
-    lineHeight: 30,
-    theme: 'grid',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, 50, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
+		    
+			var options ;
+			doc.autoTable(columns, rows,{
+			    padding: 3, // Horizontal cell padding
+			    fontSize: 8,
+			    lineHeight: 15,
+			    theme: 'grid',
+			    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
+			    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
+			    renderHeaderCell: function (x, y, width, height, key, value, settings) {
+			        doc.setFillColor(52, 73, 94); // Asphalt
+			        doc.setTextColor(255, 255, 255);
+			        doc.setFontStyle('bold');
+			        doc.rect(x, y, width, height, 'F');
+			        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+			        doc.text('' + value, x + settings.padding, y);
+			    },
+			    renderCell: function (x, y, width, height, key, value, row, settings) {
+			        doc.setFillColor(row % 2 === 0 ? 245 : 255);
+			        doc.rect(x, y, width, height, 'F');
+			        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+			        doc.text('' + value, x + settings.padding, y);
+			    },
+			    margin: {  top: 220 }, // How much space around the table
+			    startY: false, // The start Y position on the first page. If set to false, top margin is used
+			    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
+			    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
+			    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
+			    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
+			 });
+			var columns = [
+			    {title: "PREPARADO", dataKey: "preparado"},
+			    {title: "GERENTE GRAL.", dataKey: "gerente"}, 
+			    
+			    {title: "DIRECTOR", dataKey: "director"},
+			    {title: "PRESIDENTE", dataKey: "presidente"},
+			    
+			   
+			];
+			var rows = [
+			    { "PREPARADO": "     ",
+			    "GERENTE GRAL.": " ", 
+			    
+			    "DIRECTOR": "  ",
+			     "PRESIDENTE": "  "},
+			    
+			   
+			];
+			doc.autoTable(columns, rows,{
+			    padding: 3, // Horizontal cell padding
+			    fontSize: 10,
+			    lineHeight: 30,
+			    theme: 'grid',
+			    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
+			    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
+			    
+			    renderCell: function (x, y, width, height, key, value, row, settings) {
+			        doc.setFillColor(row % 2 === 0 ? 245 : 255);
+			        doc.rect(x, y, 50, height, 'F');
+			        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+			        doc.text('' + value, x + settings.padding, y);
 
-    },
-    margin: {  top: 500, right: 400 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
+			    },
+			    margin: {  top: 500, right: 400 }, // How much space around the table
+			    startY: false, // The start Y position on the first page. If set to false, top margin is used
+			    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
+			    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
+			    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
+			    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
+			 });
 
-var columns = [
-    {title: "", dataKey: "preparado"},
-     {title: "", dataKey: "cantidad"},
-    
-    
-   
-];
-var rows = [
-    { "preparado": "SALDO", "cantidad": "$ {{number_format($parametros['total_saldo'],2)}}"},
-    //{"preparado": "LIMITE DE CREDITO", "cantidad": "$ 291,890.23"}, 
-    
-   // {"preparado": "BALANCE EN CREDITO", "cantidad": "$ 291,890.23"},
-     
-    
-   
-];
+			var columns = [
+			    {title: "", dataKey: "preparado"},
+			     {title: "", dataKey: "cantidad"},
+			    
+			    
+			   
+			];
+			var rows = [
+			    { "preparado": "SALDO", "cantidad": "$ {{number_format($parametros['total_saldo'],2)}}"},
+			    //{"preparado": "LIMITE DE CREDITO", "cantidad": "$ 291,890.23"}, 
+			    
+			   // {"preparado": "BALANCE EN CREDITO", "cantidad": "$ 291,890.23"},
+			     
+			    
+			   
+			];
 
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 8,
-    lineHeight: 15,
-    theme: 'plain',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    renderHeaderCell: function (x, y, width, height, key, value, settings) {
-        doc.setFillColor(52, 73, 94); // Asphalt
-        doc.setTextColor(255, 255, 255);
-        doc.setFontStyle('bold');
-        doc.rect(x, y, 20, 20, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-        
-    },
-    margin: {  top: 490, right: 100, left:500 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
+			doc.autoTable(columns, rows,{
+			    padding: 3, // Horizontal cell padding
+			    fontSize: 8,
+			    lineHeight: 15,
+			    theme: 'plain',
+			    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
+			    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
+			    renderHeaderCell: function (x, y, width, height, key, value, settings) {
+			        doc.setFillColor(52, 73, 94); // Asphalt
+			        doc.setTextColor(255, 255, 255);
+			        doc.setFontStyle('bold');
+			        doc.rect(x, y, 20, 20, 'F');
+			        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+			        doc.text('' + value, x + settings.padding, y);
+			    },
+			    renderCell: function (x, y, width, height, key, value, row, settings) {
+			        doc.setFillColor(row % 2 === 0 ? 245 : 255);
+			        doc.rect(x, y, width, height, 'F');
+			        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+			        doc.text('' + value, x + settings.padding, y);
+			        
+			    },
+			    margin: {  top: 490, right: 100, left:500 }, // How much space around the table
+			    startY: false, // The start Y position on the first page. If set to false, top margin is used
+			    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
+			    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
+			    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
+			    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
+			 });
 
 
 
-doc.save('reporte');
-
-	    	
-	    }
-	    @endif
+			doc.save('reporte');
+		}
+    @endif
 </script>
 
 

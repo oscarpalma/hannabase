@@ -111,7 +111,11 @@
                                             <a href="{{route('filtro_descuentos')}}"> <i class="fa fa-sort-amount-desc" ></i> Descuentos</a>
                                         </li>
                                     @endif
-
+                                    @if(in_array(Auth::user()->role,['administrador','supervisor','recepcion','contabilidad']))
+                                        <li>
+                                            <a href="{{route('verDescuentos')}}"> <i class="fa fa-list" ></i> Ver descuentos</a>
+                                        </li>
+                                    @endif
                                     @if(in_array(Auth::user()->role, ['administrador','recepcion','contabilidad']))
                                          <li>
                                             <a href="{{route('filtro_reembolsos')}}"> <i class="fa fa-money" ></i> Reembolsos</a>
@@ -250,7 +254,7 @@
                                         <a href="{{route('requerimiento')}}" ><i class="fa fa-address-book-o"></i>Ingresar Requerimiento</a>
                                     </li>
                                     <li>
-                                        <a href="{{route('clientes/reporte')}}"><i class="fa fa-plus"></i>Generar Reporte</a>
+                                       <a href=""><i class="fa fa-plus"></i>Generar Reporte</a>
                                     </li>
                                 </ul>
                             </li>
@@ -316,7 +320,8 @@
                                     
                                 </ul>
                             </li> 
-
+@endif 
+@if(in_array(Auth::user()->role, ['administrador','gerente']))
                             <!-- Inventario -->
                             <li>   
                                 <a href="#"><i class="glyphicon glyphicon-list"></i> Inventario<span class="fa arrow"></span></a>

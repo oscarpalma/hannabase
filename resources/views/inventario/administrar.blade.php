@@ -194,7 +194,7 @@
 					  	<select class="form-control" id="area" name="area" required>
 					  		<option value="">Seleccione</option>
 					  		@foreach($areas as $area) 
-			        			<option value="{{ $area->idAreaCt }}">{{ $area->nombre }}</option>
+			        			<option value="{{ $area->idArea }}">{{ $area->nombre }}</option>
 			        		@endforeach
 					  	</select>
 					  </div>
@@ -264,7 +264,7 @@
 <script type="text/javascript">
 	
 	function mostrarSistemas(){
-		if ($("#area").val()=='24'){
+		if ($("#area").val()=='7'){
 		  	$("#sistemas").show();
 		  	
 		  	
