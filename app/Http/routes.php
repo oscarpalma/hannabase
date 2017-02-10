@@ -871,3 +871,13 @@ Route::get('kpi/obtenerLogros', [
 	'uses' => 'KpiController@obtener_tipoKpi_ajax',
 	'as'   => 'obtener_logros_ajax'
 	]);
+
+Route::get('kpi/reporte', [
+	'uses' => 'KpiController@reporte_get',
+	'as'   => 'kpi_reporte'
+	]);
+
+Route::post('kpi/reporte', [
+	'uses' => 'KpiController@reporte_post',
+	'as'   => 'kpi_reporte'
+	]);

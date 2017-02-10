@@ -9,6 +9,7 @@ use App\AreaCt;
 use App\tipoKpi;
 use App\logro;
 use DateTime;
+use DateInterval;
 class KpiController extends Controller {
 
 	/**
@@ -73,63 +74,78 @@ class KpiController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function reporte_get()
 	{
-		//
+		$areas = AreaCt::all();
+		return view('kpi/reporte')->with('areas',$areas);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
+	
+	public function reporte_post(Request $request)
 	{
-		//
+		
+			$area = $request->input('area');
+			$forma = $request->input('por');
+
+			//queryFechas se encarga de delimitar el periodo de tiempo
+			if($forma == 'semana')
+				$queryFechas = "semana = '" . $request->input('valor') . "'";
+
+			elseif($forma == 'mes'){
+				$fechaActual = new DateTime('now');
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				//el primer dia del mes dado
+				$fecha1->setDate($fechaActual->format('Y'),$request->input('valor'),1); 
+				
+				//el primer dia del siguiente mes
+				if($request->input('valor') == 12)
+					//si es diciembre, tomar enero como el siguiente dia
+					$fecha2 = setDate(($fechaActual->format('Y')+1), 1, 1);
+				
+				else
+					$fecha2->setDate($fechaActual->format('Y'),($request->input('valor')+1),1); 
+
+				//restar un dia a la segunda fecha para que sea el ultimo dia del mes
+				$fecha2->sub(new DateInterval('P1D'));
+
+
+			$queryFechas = "fecha BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			else {//año
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				$year = $request->input('valor');
+
+				$fecha1->setDate($year,1,1); //primer dia del año
+				$fecha2->setDate($year,12,31); //ultimo dia del año
+				
+				$queryFechas = "fecha BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			$logros = 0;
+			$resultados = array();
+			$tiposKpi = tipoKpi::where('pk_idAreaCt',$area)->get();
+			foreach ($tiposKpi as $kpi) {
+				$queryArea = " AND pk_idTipoKpi = '" . $kpi->idTipoKpi . "'"; 
+				$result['tipo_kpi'] = $kpi->nombre;
+				$result['unidad'] = $kpi->unidad;
+				$result['logros'] = logro::whereRaw($queryFechas.$queryArea)->orderBy('fecha')->get();
+				
+				
+				array_push($resultados, $result);
+			}
+			/*$result['plan'] = logro::whereRaw($queryFechas.$queryArea)->avg('actual');
+				$result['actual'] = logro::whereRaw($queryFechas.$queryArea)->avg('actual');*/
+				//$logros = $result['actual'];
+
+
+			 
+			return redirect('kpi/reporte')->with('resultados', $resultados);
+		
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+	
 
 }
