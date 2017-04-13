@@ -89,7 +89,7 @@ $( "#tipo" ).change(function() {
   	$("#usuario").prop('required', true);
   }else if ($("#tipo").val()==''){
   	$(".area").hide();
-  	$(".usuarios").hide();
+  	$(".usuariows").hide();
   }
 });
 

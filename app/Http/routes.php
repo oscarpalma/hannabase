@@ -37,6 +37,7 @@ Route::get('password/email', [
 	'uses' => 'Auth\PasswordController@getReset',
 	'as'   => 'restaurar_password'
 	]);
+
  
  // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
@@ -84,6 +85,69 @@ Route::post('cambiar-usuario-{id}', [
 	'uses' => 'UserController@modificar',
 	'as'   => 'cambiar_privilegios'
 	]);
+
+
+### Cotizaciones y Autorizaciones ###
+
+Route::get('autorizaciones/cotizaciones', [
+	'uses' => 'AutorizacionController@HacerCotizacion', 
+	'as' => 'cotizacion'
+	]);
+
+Route::post('autorizaciones/cotizaciones', [
+	'uses' => 'AutorizacionController@guardarCotizacion',
+	'as' => 'cotizacion'
+	]);
+
+
+## Esta ruta fue exenta del codigo ya que la ruta guardarCotizacion
+##cumple con la funcion de guardado y envio del formulario al correo
+
+/*Route::post('autorizaciones/cotizaciones', [
+	'uses' => 'AutorizacionController@enviarMensaje',
+	'as' => 'enviarcotizaciones'
+	]);*/
+
+
+Route::get('autorizaciones/lista_cotizaciones', [
+	'uses' => 'AutorizacionController@listaCotizaciones',
+	'as' => 'listado_cotizaciones'
+	]);
+
+Route::get('autorizaciones/cotizacion_aprobar-{idCotizacion}', [
+	'uses' => 'AutorizacionController@aprobarCotizacion',
+	'as' => 'aprobarcotizacion'
+	]);
+
+Route::post('autorizaciones/autorizaciones', [
+	'uses' => 'AutorizacionController@guardarAutorizacion',
+	'as' => 'autorizacionguardar'
+	]);
+
+Route::get('autorizaciones/lista_autorizaciones', [
+	'uses' => 'AutorizacionController@listaAutorizaciones',
+	'as'   => 'listado_autorizaciones'
+	]);
+
+Route::get('autorizaciones/ver_autorizacion-{idAutorizacion}', [
+	'uses' => 'AutorizacionController@verAutorizacion',
+	'as' => 'verautorizacion'
+	]);
+
+
+/* Se esta validando si aun se tienen que usar estas ruta*/
+##-------------------------------------------------------------
+Route::get('autorizaciones/autorizaciones', [
+	'uses' => 'AutorizacionController@HacerAutorizacion',
+	'as' => 'autorizacion'
+	]);
+
+Route::get('PDF/invoice', [
+	'uses' => 'PdfController@invoice',
+	'as'   => 'invoice'
+	]);
+##---------------------------------------------------------------
+
 
 #### Candidatos ####
 Route::get('nuevo-empleado',

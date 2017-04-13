@@ -1,333 +1,164 @@
 @extends('layouts.dashboard')
-@section('page_heading','Generar Reporte')
+@section('page_heading','Autorizacion')
 @section('head')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset("assets/stylesheets/select2.css") }}" />
+<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.common.min.css"/>
+    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.rtl.min.css"/>
+    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.silver.min.css"/>
+    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.mobile.all.min.css"/>
+
+    
+    
 @stop
 @section('section')
 
-@if(Session::has('message'))
-	<script type="text/javascript">
-		window.onload = function(){ alert("{{Session::get('message')}}");}
-	</script>
-@endif
 
-<form class="form-horizontal" role="form" method="POST" action="" id="buscar_checada">
-	<div class="panel panel-primary">
-		<div class="panel-heading"><strong>Buscar</strong></div>
+@if(Session::has('mensaje'))
+    <script type="text/javascript">
+        window.onload = function(){ alert("{{Session::get('mensaje')}}");}
+    </script>
+@endif
+<!--  Este formulario genera la autorizacion una vez que se revisa la cotizacion,los datos que se ingresan en los campos del formulario se guardan en la base de datos y se muestran en la vista lista_autorizaciones  !-->
+<form class="form-horizontal" role="form" method="POST" action="{{ route('autorizacion') }}" >
+<input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <div class="panel panel-primary">
+		<div class="panel-heading"><strong>Generar Autorizacion</strong></div>
 		<div class="panel-body">
-			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 			<div class="row-sm">					
 				<p>Campos marcados con <text style="color:red">*</text> son obligatorios.</p>
 			</div>
 			<div class="row">
+			<div class="panel-body">
+				
+               <div class="col-sm-4">
+                    <label class="control-label">Solicita<text style="color:red">*</text></label>
+                        <div>
+                            <select class="form-control" name="solicitante" id="solicitante">
+                                <option value="">SELECCIONAR</option>
+                                @foreach($info['solicitan'] as $solicitan)
+                                    <option value="{{$solicitan->idEmpleadoCt}}">{{$solicitan->nombres}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                </div>             
+
 				<div class="col-sm-4">
-					<label class="control-label">Proveedor</label>
-					<div>
-						<select class="form-control" id="proveedor" name="proveedor" style="text-transform:uppercase">
-							<!--en caso de no especificar ninguno
-							<option value="todos">Todos</option>-->
-							@foreach($parametros['proveedores'] as $proveedor)
-								<option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
-							@endforeach
-						</select>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<label class="control-label">Por <text style="color:red">*</text></label>
-					<div>
-						<select class="form-control" name="por" id="por">
-							
-								<option value="semana">Semana </option>
-								<option value="mes">Mes </option>
-								<option value="anual">Año</option>
-							
-						</select>
+					<label class="control-label">Fecha <text style="color:red">*</text></label>
+					<div >
+						<input type="date"  class="form-control" name="fecha" value="<?php echo date('Y-m-d'); ?>" id="" max="<?php echo date('Y-m-d'); ?>">
 					</div>
 				</div>
 
 				<div class="col-sm-4">
-					<label class="control-label" id="etiqueta">Semana <text style="color:red">*</text></label>
-					<select class="form-control" name="valor" id="selector">
-						@for($s = 1; $s <= 53; $s++)
-							<option value="{{$s}}">Semana {{$s}}</option>
-						@endfor
-					</select>
-					<text id="nota"><strong>Nota:</strong> se toma en cuenta solo el año actual</text>
+				<label class="control-label">Area<text style="color:red">*</text></label>
+					<div>
+						<select class="form-control" name="area" id="area" required="">
+							<option value="">SELECCIONAR</option>
+							@foreach($info['areas'] as $area)
+								<option value="{{$area->idAreaCt}}">{{$area->nombre}}</option>
+							@endforeach
+						</select>	
+					</div>
+				</div>
+
+                <div class="col-sm-4">
+                <label class="control-label">Responsable<text style="color:red">*</text></label>
+                    <div>
+                        <select class="form-control" name="responsable" id="responsable">
+                            <option>SELECCIONAR</option>
+                            @foreach($info['solicitan'] as $solicitan)
+                                <option value="{{$solicitan->idEmpleadoCt}}">{{$solicitan->nombres}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+				<div class="col-sm-4">
+					<label class="control-label">Concepto</text></label>
+					<div >
+						<input type="text"  class="form-control" name="concepto"  id="concepto" >
+					</div>
+				</div>
+
+				<div class="col-sm-4">
+				<label class="control-label">Tipo de Pago<text style="color:red">*</text></label>
+					<div>
+						<select class="form-control" name="tipo_pago" id="tipo_pago" >
+							<option value="">SELECCIONAR</option>
+							<option value="Transferencia">Transferencia</option>
+							<option value="Tarjeta">Cheque</option>
+							<option value="Efectivo">Efectivo</option>
+						</select>	
+					</div>
 				</div>
 			</div>
-			
-			<br>
-		    <center>
-				<button type="submit" class="btn btn-primary" value="validate" style="margin-right: 15px;">
-					Buscar
-				</button>
-			</center>
 
+	<form id="testform">
+		<div class="panel-primary">
+			<div class="panel-heading"><strong>Proveedores</strong></div>
+				<div class="panel-body">
+					<div class="row">
+
+						<div class="col-sm-4">
+						<label class="control-label">Proveedor<text style="color:red">*</text></label>
+							<div>
+								<select class="form-control" name="proveedor" id="proveedor" required="">
+									<option value="">SELECCIONAR</option>
+										@foreach($info['proveedores'] as $proveedor)
+										<option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
+										@endforeach
+								</select>	
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<label class="control-label">Descripcion<text style="color:red">*</text></label>
+							<div>
+								<input type="text"  class="form-control" name="descripcion"  id="descripcion" >
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<label class="control-label">Precio Unitario</text></label>
+							<div>
+								<input type="text"  class="form-control" name="precio_unitario"  id="precio_unitario"  value="" required="">
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<label class="control-label">Cantidad</label>
+							<div>
+								<input type="text"  class="form-control" name="cantidad"  id="cantidad"  value="" required="">
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<label class="control-label">Total<text style="color:red">*</text></label>
+							<div>
+								<input type="text"  class="form-control" name="total"  id="total" >
+							</div>
+						</div>
+
+					</div>
+				</div>
 		</div>
+	</form>	
+<br>
+		</div>
+
+		<br>
+				<br>
+				    <center>
+						<div class="row">
+							<button type="submit" class="btn btn-primary">
+								Guardar
+							</button>
+						</div>
+					</center>
 	</div>
+</div>
 </form>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#por').on('change', function(e){
-	        console.log(e);
-	        if(e.target.value == 'semana'){
-		        $("#selector").empty();
-		        $("#etiqueta").empty();
-		        $("#nota").empty();
-		        $("#nota").append("<strong>Nota:</strong> se toma en cuenta solo el año actual");
-		        $("#etiqueta").append("Semana <text style='color:red'>*</text>");
-
-		        for(var s = 1; s < 54; s++){
-		        	$("#selector").append('<option value="' + s + '" >Semana ' + s + '</option>');
-		        }
-
-		    }
-
-		    if(e.target.value == 'mes'){
-		    	$("#selector").empty();
-		    	$("#etiqueta").empty();
-		        $("#nota").empty();
-		        $("#nota").append("<strong>Nota:</strong> se toma en cuenta solo el año actual");
-		    	$("#etiqueta").append("Mes <text style='color:red'>*</text>");
-		    	$("#selector").append('<option value="1">Enero</option>');		    	
-		    	$("#selector").append('<option value="2">Febrero</option>');
-		    	$("#selector").append('<option value="3">Marzo</option>');
-		    	$("#selector").append('<option value="4">Abril</option>');
-		    	$("#selector").append('<option value="5">Mayo</option>');
-		    	$("#selector").append('<option value="6">Junio</option>');
-		    	$("#selector").append('<option value="7">Julio</option>');
-		    	$("#selector").append('<option value="8">Agosto</option>');
-		    	$("#selector").append('<option value="9">Septiembre</option>');
-		    	$("#selector").append('<option value="10">Octubre</option>');
-		    	$("#selector").append('<option value="11">Noviembre</option>');
-		    	$("#selector").append('<option value="12">Diciembre</option>');
-		    }
-
-		    if(e.target.value == 'anual'){
-		    	$("#selector").empty();
-		    	$("#etiqueta").empty();
-		        $("#nota").empty();
-		    	$("#etiqueta").append("Año <text style='color:red'>*</text>");	    	
-		    	$("#selector").append('<option value="2016">2016</option>');
-		    	$("#selector").append('<option value="2017">2017</option>');
-		    }
-	    });
-
-
-	});
-</script>
-
-@if(isset($parametros['transacciones']))
-@if(count($parametros['transacciones'])>0)
-	<br>
-	
-	<h1>Reporte </h1>
-	
-	<br>
-
-	<!--Tabla con los resultados de la busqueda-->
-	<div id="dvData" style="overflow:scroll; overflow:auto;">
-		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase' id="exportTable">
-			<thead >
-				
-
-				<tr>
-					<th>#</th>
-					<th>factura</th>
-					<th>Concepto</th>
-					<th>Semana</th>
-					<th NOWRAP>fecha de captura</th>
-					<th NOWRAP>fecha agendada</th>
-					<th>cargo</th>
-					<th>abono</th>
-					<th>saldo</th>
-					<th NOWRAP>fecha progr. de pago</th>
-					<th NOWRAP>fecha de pago</th>
-					<th># cheque</th>
-
-				</tr>
-
-				<?php
-					//convertir las fechas a datetime, para darles el formato necesario
-					// $fecha1 = new DateTime($parametros['fecha1']);
-					// $fecha2 = new DateTime($parametros['fecha2']);
-
-					//array con las traducciones correspondientes a espanol
-					$meses =[
-					'January' => 'Enero',
-					'February' => 'Febrero',
-					'March' => 'Marzo',
-					'April' => 'Abril',
-					'May'   => 'Mayo',
-					'June'  => 'Junio',
-					'July'  => 'Julio',
-					'August' => 'Agosto',
-					'September' => 'Septiembre',
-					'October' => 'Octubre',
-					'November' => 'Noviembre',
-					'December' => 'Diciembre'];
-				?>
-
-				
-			</thead>
-
-			<tbody>
-				<?php
-				$i = 1;
-				?>
-				@foreach($parametros['transacciones'] as $transaccion)
-					<tr>
-						<td>{{$i++}}</td>
-						<td>{{$transaccion->factura}}</td>
-						<td NOWRAP>{{$transaccion->concepto}}</td>
-						<td>{{$transaccion->semana}}</td>
-						<td>{{$transaccion->fecha_captura}}</td>
-						<td>{{$transaccion->fecha_agendada}}</td>
-						<td>$ {{number_format($transaccion->cargo,2)}}</td>
-						<td>$ {{number_format($transaccion->abono,2)}}</td>
-						<td>$ {{number_format($transaccion->saldo,2)}}</td>
-						<td>{{$transaccion->fecha_programada}}</td>
-						<td>{{$transaccion->fecha_traspaso}}</td>
-						<td>{{$transaccion->cheque}}</td>
-								
-					</tr>
-			@endforeach
-				<tr>
-						<td></td>
-						<td></td>
-						<td NOWRAP></td>
-						<td></td>
-						<td></td>
-						<td>Total</td>
-						<td NOWRAP>$ {{number_format($parametros['total_cargo'],2)}}</td>
-						<td NOWRAP>$ {{number_format($parametros['total_abono'],2)}}</td>
-						<td NOWRAP>$ {{number_format($parametros['total_saldo'],2)}}</td>
-						<td></td>
-						<td></td>
-						<td></td>
-								
-					</tr>
-			</tbody>
-
-		</table>
-
-
-
-	</div>
-	<br>
-	<div class="row">
-        <div class="col-lg-8" style="">
-        	<h1>Grafica</h1>
-    		<canvas id="cbar" ></canvas>
-		</div>
-	</div>
-
-<button onclick="imprimir();" class="btn btn-primary">Exportar a PDF</button>
-<br>
-
-	<br><br>
-	@else
-<div class="alert alert-info alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>¡Sin resultado!</strong> No se encontro ningun resultado con los parametros especificados.<br><br> 
-				
-			</div> 
-
-
-@endif
-
-@endif
-
- 
-
-<script>
-
-
-
-    $(document).ready(function () {
-       
-    
- 		$("#proveedor").select2();
-		$("#cliente").select2();
-
-	$('#cliente').on('change', function(e){
-    console.log(e);
-    var idCliente = e.target.value;
-	$("#cliente option[value='null']").hide();
-	
-    if($("#cliente").val() != "null"){
-
-	    $.get('/ajax-cliente?idCliente=' + idCliente, function(data) {
-	    	//console.log(data);
-
-	    	//Muestra los turnos segun el cliente que se ha seleccionado
-	       	$('#turno').empty();
-	       	$.each(data,function(index,turnosObj){
-	       	$('#turno').append('<option value="'+turnosObj.idTurno+'">'+turnosObj.hora_entrada+" - "+turnosObj.hora_salida+'</option>');
-	       	});
-
-	    });
-	}
-
-	else{
-		$('#turno').empty();
-	}
-});
-
-
-	
-//number_format($parametros['total_saldo'],2)
-@if(isset($i))
-var semanas=[];
-var cargos=[];
-
-@foreach ($parametros['transacciones'] as $transaccion)
-		semanas.push( {"semana": "{{$transaccion->semana}}"});
-		cargos.push( {"cargo": "{{$transaccion->cargo}}"});
-@endforeach 
-var unicos =$.unique(semanas);
-var bdata = {
-
-        labels : semanas.map((el) => el.semana),
-        datasets : [
-            
-            {
-            	label: "life expectancy (years)",
-               fillColor: "rgba(151,187,205,0.5)",
-                strokeColor: "rgba(151,187,205,0.8)",
-                highlightFill: "rgba(151,187,205,0.75)",
-                highlightStroke: "rgba(151,187,205,1)",
-                data : cargos.map((el) => el.cargo)
-            }
-        ]
-
-    }
-    var cbar = document.getElementById("cbar").getContext("2d");
-    new Chart(cbar).Bar(bdata, {
-            responsive : true,
-            scaleShowLabels : true,
-        });
-    @endif
-
-
-    });
-
-
-   
-   // function imprimir(){
-
-   // 	var cbarr = document.getElementById("cbar");
-   // 	var tabla = document.getElementById("reporte");
-   //   var win=window.open();
-   //   	//alert(cbarr.toDataURL());
-
-   //      win.document.write("<br><img src='"+cbarr.toDataURL()+"'/>"+tabla);
-   //      win.print();
-   //      win.location.reload();
-   // }
-
-</script>
 <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
 <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
 <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
@@ -547,7 +378,7 @@ doc.autoTable(columns, rows,{
 
 
 
-doc.save('autorizacion');
+doc.save('reporte');
 
             
         }
