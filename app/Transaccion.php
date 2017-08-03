@@ -6,6 +6,6 @@ class Transaccion extends Model {
 
 	//
 	protected $table = 'transacciones';
-	protected $fillable = ['factura','proveedor','concepto','semana','fecha_captura','fecha_agendada','cargo','abono','saldo','fecha_programada','fecha_traspaso','cheque'];
+	protected $fillable = ['factura','proveedor','concepto','categoria','subcategoria','codigo','semana','fecha_captura','fecha_agendada','cargo','abono','saldo','fecha_programada','fecha_traspaso','cheque'];
 
 }

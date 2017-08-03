@@ -28,7 +28,7 @@ class CreateTransaccionsTable extends Migration {
 			$table->date('fecha_traspaso')->nullable();
 			$table->string('cheque');
 			$table->timestamps();
-
+			//se declara estancia de llave foranea
 			$table->foreign('proveedor')->references('id')->on('proveedores');
 		});
 	}

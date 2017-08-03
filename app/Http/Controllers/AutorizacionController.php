@@ -57,6 +57,8 @@ class AutorizacionController extends Controller {
 		}
 	}
 
+
+
 	//Envia correo con el formulario
 	public function enviarMensaje(Request $request)
 	{	

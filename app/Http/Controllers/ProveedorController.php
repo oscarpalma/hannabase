@@ -61,6 +61,8 @@ class ProveedorController extends Controller {
 			return view('errors/restringido');	
 	}
 
+
+
 	public function transaccion()
 	{
 		if(Auth::guest())
@@ -85,6 +87,9 @@ class ProveedorController extends Controller {
 			'factura' => $request->input('factura'),
 			'proveedor' => $proveedor->id,
 			'concepto' => $request->input('concepto'),
+			'categoria' => $request->input('categoria'),
+			'subcategoria' => $request->input('subcategoria'),
+			'codigo' => $request->input('codigo'),
 			'semana' => $request->input('semana'),
 			'fecha_captura' => $request->input('fecha_captura'),
 			'fecha_agendada' => $request->input('fecha_agendada'),
@@ -104,6 +109,7 @@ class ProveedorController extends Controller {
 		else
 			return view('errors/restringido');	
 	}
+
 
 	public function listaProveedores()
 
@@ -175,6 +181,7 @@ class ProveedorController extends Controller {
 			return view('errors/restringido');
 	}
 
+
 	public function mostrar(Request $request)
 	{
 		if(Auth::guest())
@@ -239,6 +246,7 @@ class ProveedorController extends Controller {
 			return view('errors/restringido');
 	}
 
+
 	public function buscarReporte()
 	{
 		
@@ -260,12 +268,13 @@ class ProveedorController extends Controller {
 
 	public function generarReporte(Request $request)
 	{
-		if(Auth::guest())
+	if(Auth::guest())
 			return redirect()->route('login');
 
 		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){		
 			$proveedor = $request->input('proveedor');
 			$forma = $request->input('por');
+
 
 			//queryFechas se encarga de delimitar el periodo de tiempo
 			if($forma == 'semana')
@@ -312,6 +321,8 @@ class ProveedorController extends Controller {
 			else
 				$queryProveedor = " AND proveedor = '" . $request->input('proveedor') . "'";
 
+			
+
 			$transacciones = Transaccion::whereRaw($queryFechas.$queryProveedor)->	orderBy('semana')->get();
 
 
@@ -324,9 +335,18 @@ class ProveedorController extends Controller {
 				$total_abono += $transaccion->abono;
 				$total_saldo += $transaccion->saldo;
 			}
+
+			###### Consulta directa a la base de datos que trae los codigos de expensa #####
+			$codigo = \DB::table('transacciones')
+				->select(\DB::raw('count(id) count, codigo, categoria, subcategoria, semana'))
+				->whereRaw($queryFechas)
+				->groupBy('codigo')
+				->orderBy('semana')
+				->get();
+
 			$proveedores = Proveedor::all();
 			$proveedor = Proveedor::where('id', $proveedor)->first();
-			$parametros = ['proveedores' => $proveedores, 'transacciones'=>$transacciones,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo, 'proveedor'=>$proveedor]; //parametros para filtrar la busqueda
+			$parametros = ['proveedores' => $proveedores, 'transacciones'=>$transacciones,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo, 'proveedor'=>$proveedor, 'codigo'=>$codigo]; //parametros para filtrar la busqueda
 			return view('proveedores/reporte')->with('parametros', $parametros);
 		}
 
@@ -342,6 +362,8 @@ class ProveedorController extends Controller {
 
 		
 	}
+
+	
 
 public function editarT($id){
 
@@ -369,6 +391,45 @@ if(Auth::guest())
 
 	}
 
+####################### Metodos para Cambiar Saldo a Abono ##############################################
+
+	public function MostrarSaldo($id)
+	{
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		else if(Auth::user()->role == 'administrador'){
+
+			$transaccion = Transaccion::find($id);
+			return view('proveedores/mostrar_saldos')->with('transaccion',$transaccion);
+		}
+		else
+			return view('errors/restringido');
+	}
+
+	public function ConvertirSaldo(Request $request, $id)
+	{
+
+		
+		if(Auth::guest())
+				return redirect()->route('login');
+
+		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
+
+			$transaccion = Transaccion::find($id);
+			$transaccion->abono = $request->input('saldo');
+			$transaccion->saldo = 0;
+
+			$transaccion->save();
+			return redirect()->route('transacciones')->withInput()->with('mensaje','Abono Guardado');
+		}
+		
+		else
+			return view('errors/restringido');
+	}
+
+########################################################################################################
+
 	public function guardarCambios(Request $request, $id){
 
 if(Auth::guest())
@@ -380,6 +441,9 @@ if(Auth::guest())
 			$transaccion->factura = $request->input('factura');
 			$transaccion->proveedor=$request->input('proveedor');
 			$transaccion->concepto= $request->input('concepto');
+			$transaccion->categoria = $request->input('categoria');
+			$transaccion->subcategoria = $request->input('subcategoria');
+			$transaccion->codigo = $request->input('codigo');
 			$transaccion->semana = $request->input('semana');
 			$transaccion->fecha_captura = $request->input('fecha_captura');
 			$transaccion->fecha_agendada = $request->input('fecha_agendada');

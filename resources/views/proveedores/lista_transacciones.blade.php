@@ -2,8 +2,6 @@
 @section('page_heading','Transacciones')
 @section('section')
 
-
-
 <form class="form-horizontal" role="form" method="POST" action="{{ route('transacciones')}}">
 	<div class="panel panel-primary">
 		<div class="panel-heading"><strong>Filtros</strong></div>
@@ -34,7 +32,7 @@
 
 @if(isset($transacciones))
 	<h2>Resultados</h2>
-	<div class="tabla">
+	<div class="tabla" >
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
 		    <thead>
 		        <th>ID</th>
@@ -50,6 +48,8 @@
 		        <th><center>Fecha programada</center></th>
 		        <th><center>Fecha de traspaso</center></th>
 		        <th><center># de cheque</center></th>
+		        <th><center>Categoria</center></th>
+		        <th><center>Codigo de Expensas</center></th>
 		        <th><center>Acciones</center></th>
 		    </thead>
 
@@ -69,7 +69,12 @@
 			        	<td>{{$transaccion->fecha_programada}}</td>
 			        	<td>{{$transaccion->fecha_traspaso}}</td>
 			        	<td>{{$transaccion->cheque}}</td>
+			        	<td>{{$transaccion->subcategoria}}</td>
+			        	<td>{{$transaccion->codigo}}</td>
 			        	<td><center>
+
+<a class="btn btn-success btn-sm" href="{{ route('mostrarsaldo', $transaccion->id)}}" title="convertir saldo" ><i class="fa fa-share"></i></a>
+
 <a class="btn btn-primary btn-sm" href="{{ route('proveedores/editar-transaccion',$transaccion->id) }}" title="editar" ><i class="fa fa-edit"></i></a>
 <br>
 
@@ -82,3 +87,21 @@
 	</div>
 @endif
 @stop
+
+<script>
+	
+$(document).ready(function(){
+
+	
+	$("#seleccionarTodo").click(function(){
+		if($("seleccionarTodo").prop("checked")){
+			$(".select").prop("checked", true);
+		}else{
+			$(".select").prop("checked", false);
+		}
+	});
+
+});
+
+</script>
+

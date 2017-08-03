@@ -11,7 +11,7 @@
 	</script>
 @endif
 
-<form class="form-horizontal" role="form" method="POST" action="" id="buscar_checada">
+<form class="form-horizontal" role="form" method="POST" action="{{route('proveedores/reporte')}}">
 	<div class="panel panel-primary">
 		<div class="panel-heading"><strong>Buscar</strong></div>
 		<div class="panel-body">
@@ -134,6 +134,7 @@
 
 				<tr>
 					<th>#</th>
+					<th>subcategoria</th>
 					<th>factura</th>
 					<th>Concepto</th>
 					<th>Semana</th>
@@ -172,6 +173,8 @@
 				
 			</thead>
 
+
+
 			<tbody>
 				<?php
 				$i = 1;
@@ -179,6 +182,7 @@
 				@foreach($parametros['transacciones'] as $transaccion)
 					<tr>
 						<td>{{$i++}}</td>
+						<td>{{$transaccion->subcategoria}}</td>
 						<td>{{$transaccion->factura}}</td>
 						<td NOWRAP>{{$transaccion->concepto}}</td>
 						<td>{{$transaccion->semana}}</td>
@@ -193,21 +197,6 @@
 								
 					</tr>
 			@endforeach
-				<tr>
-						<td></td>
-						<td></td>
-						<td NOWRAP></td>
-						<td></td>
-						<td></td>
-						<td>Total</td>
-						<td NOWRAP>$ {{number_format($parametros['total_cargo'],2)}}</td>
-						<td NOWRAP>$ {{number_format($parametros['total_abono'],2)}}</td>
-						<td NOWRAP>$ {{number_format($parametros['total_saldo'],2)}}</td>
-						<td></td>
-						<td></td>
-						<td></td>
-								
-					</tr>
 			</tbody>
 
 		</table>
@@ -216,6 +205,66 @@
 
 	</div>
 	<br>
+
+		<div id="dvData" style="overflow:scroll; overflow:auto;">
+		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase' id="exportTable">
+			<thead >
+				
+
+				<tr>
+					<th>Semana</th>
+					<th>Categoria</th>
+					<th>Subcategoria</th>
+					<th>Codigo de Expensa</th>
+					<th>#</th>
+				</tr>
+
+				<?php
+					//convertir las fechas a datetime, para darles el formato necesario
+					// $fecha1 = new DateTime($parametros['fecha1']);
+					// $fecha2 = new DateTime($parametros['fecha2']);
+
+					//array con las traducciones correspondientes a espanol
+					$meses =[
+					'January' => 'Enero',
+					'February' => 'Febrero',
+					'March' => 'Marzo',
+					'April' => 'Abril',
+					'May'   => 'Mayo',
+					'June'  => 'Junio',
+					'July'  => 'Julio',
+					'August' => 'Agosto',
+					'September' => 'Septiembre',
+					'October' => 'Octubre',
+					'November' => 'Noviembre',
+					'December' => 'Diciembre'];
+				?>
+
+				
+			</thead>
+
+
+
+			<tbody>
+
+				@foreach($parametros['codigo'] as $codigo)
+					<tr>
+						<td>{{$codigo->semana}}</td>
+						<td>{{$codigo->categoria}}</td>
+						<td>{{$codigo->subcategoria}}</td>
+						<td>{{$codigo->codigo}}</td>
+						<td>{{$codigo->count}}</td>		
+					</tr>
+			@endforeach
+			</tbody>
+
+		</table>
+
+
+
+	</div>
+	<br>
+
 	<div class="row">
         <div class="col-lg-8" style="">
         	<h1>Grafica</h1>
@@ -245,37 +294,9 @@
 
 
 
+
     $(document).ready(function () {
        
-    
- 		$("#proveedor").select2();
-		$("#cliente").select2();
-
-	$('#cliente').on('change', function(e){
-    console.log(e);
-    var idCliente = e.target.value;
-	$("#cliente option[value='null']").hide();
-	
-    if($("#cliente").val() != "null"){
-
-	    $.get('/ajax-cliente?idCliente=' + idCliente, function(data) {
-	    	//console.log(data);
-
-	    	//Muestra los turnos segun el cliente que se ha seleccionado
-	       	$('#turno').empty();
-	       	$.each(data,function(index,turnosObj){
-	       	$('#turno').append('<option value="'+turnosObj.idTurno+'">'+turnosObj.hora_entrada+" - "+turnosObj.hora_salida+'</option>');
-	       	});
-
-	    });
-	}
-
-	else{
-		$('#turno').empty();
-	}
-});
-
-
 	
 //number_format($parametros['total_saldo'],2)
 @if(isset($i))
@@ -311,8 +332,7 @@ var bdata = {
     @endif
 
 
-    });
-
+   });
 
    
    // function imprimir(){
@@ -401,6 +421,7 @@ doc.addImage(imgData, 250, 80, 330, 120);
 //var columns = ["#", "FACTURA", "PROVEEDOR","CONCEPTO", "WEEK", "ISSUE DATE", "DUE DATE", "CARGO", "ABONO", "SALDO","PROG DE PAGO","FECHA DE PAGO","#CHEQUE"];
 var columns = [
     {title: "ID", dataKey: "id"},
+    {title: "SUBCATEGORIA", dataKey: "subcategoria"},
     {title: "FACTURA", dataKey: "factura"}, 
     
     {title: "CONCEPTO", dataKey: "concepto"},
@@ -416,17 +437,30 @@ var columns = [
    
 ];
 
+var expensas = [
+	{title: "SEMANA", dataKey: "semana"},
+	{title: "CATEGORIA", dataKey: "categoria"},
+	{title: "SUBCATEGORIA", dataKey: "subcategoria"},
+	{title: "CODIGO DE EXPENSA", dataKey: "codigo"},
+	{title: "TOTAL", dataKey: "count"}
+];
+
 var datos=[];
 var cargos=[];
 var rows = [];
+var rows2 = [];
 var i=1;
 @foreach ($parametros['transacciones'] as $transaccion)
-        rows.push( {"id": i, "factura" : "{{$transaccion->factura}}", "concepto": "{{$transaccion->concepto}}", "week": "{{$transaccion->semana}}", "issue":"{{$transaccion->fecha_captura}}", "due":"{{$transaccion->fecha_agendada}}", "cargo":"$ {{number_format($transaccion->cargo,2)}}","abono":"$ {{number_format($transaccion->abono,2)}}","saldo":"$ {{number_format($transaccion->saldo,2)}}","progdepago":"{{$transaccion->fecha_programada}}","fechapago":"{{$transaccion->fecha_traspaso}}","cheque":"{{$transaccion->cheque}}"});
+        rows.push( {"id": i, "subcategoria": "{{$transaccion->subcategoria}}", "factura" : "{{$transaccion->factura}}", "concepto": "{{$transaccion->concepto}}", "week": "{{$transaccion->semana}}", "issue":"{{$transaccion->fecha_captura}}", "due":"{{$transaccion->fecha_agendada}}", "cargo":"$ {{number_format($transaccion->cargo,2)}}","abono":"$ {{number_format($transaccion->abono,2)}}","saldo":"$ {{number_format($transaccion->saldo,2)}}","progdepago":"{{$transaccion->fecha_programada}}","fechapago":"{{$transaccion->fecha_traspaso}}","cheque":"{{$transaccion->cheque}}"});
         i= i+1;
         
 @endforeach
 rows.push( {"id": "", "factura" : "", "concepto": "", "week": "", "issue":"", "due":"TOTAL", "cargo":"$ {{number_format($parametros['total_cargo'],2)}}","abono":"$ {{number_format($parametros['total_abono'],2)}}","saldo":"$ {{number_format($parametros['total_saldo'],2)}}","progdepago":"","fechapago":"","cheque":""});
 
+@foreach ($parametros['codigo'] as $codigo)
+		rows2.push({ "semana": "{{$codigo->semana}}", "categoria": "{{$codigo->categoria}}", "subcategoria": "{{$codigo->subcategoria}}", "codigo": "{{$codigo->codigo}}", "count": "{{$codigo->count}}"});
+
+@endforeach
     
 var options ;
 doc.autoTable(columns, rows,{
@@ -457,6 +491,38 @@ doc.autoTable(columns, rows,{
     avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
     extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
  });
+
+//######################################################## Tabla para Expensas ##########################################################
+doc.autoTable(expensas, rows2,{
+    padding: 3, // Horizontal cell padding
+    fontSize: 8,
+    lineHeight: 15,
+    theme: 'grid',
+    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
+    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
+    renderHeaderCell: function (x, y, width, height, key, value, settings) {
+        doc.setFillColor(52, 73, 94); // Asphalt
+        doc.setTextColor(255, 255, 255);
+        doc.setFontStyle('bold');
+        doc.rect(x, y, width, height, 'F');
+        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+        doc.text('' + value, x + settings.padding, y);
+    },
+    renderCell: function (x, y, width, height, key, value, row, settings) {
+        doc.setFillColor(row % 2 === 0 ? 245 : 255);
+        doc.rect(x, y, width, height, 'F');
+        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
+        doc.text('' + value, x + settings.padding, y);
+    },
+    margin: {  top: 290 }, // How much space around the table
+    startY: false, // The start Y position on the first page. If set to false, top margin is used
+    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
+    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
+    avoidPageSplit: true, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
+    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
+ });
+//############################################################################################################################################
+
 var columns = [
     {title: "PREPARADO", dataKey: "preparado"},
     {title: "GERENTE GRAL.", dataKey: "gerente"}, 

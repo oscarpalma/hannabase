@@ -208,6 +208,8 @@ class EmpleadoController extends Controller {
 			return view('errors/restringido');
 	}
 
+	
+
 	public function promover($idEmpleado){
 		//promover un candidato a empleado
 		$empleado = Empleado::find($idEmpleado);
@@ -488,14 +490,17 @@ class EmpleadoController extends Controller {
 		
 
 		//$contacto->save();
-		DatosLocalizacion::where('idEmpleado', $idEmpleado)->update(array('tel_casa'=> $request->input('tel_casa'),'tel_cel' =>$request->input('tel_cel'),
-		'calle' =>$request->input('calle'),
-		'no_interior' =>$request->input('no_interior'),
-		'no_exterior'=> $request->input('no_exterior'),
-		'idColonia' =>$request->input('idColonia'),
-		'nombre_contacto'=> $request->input('nombre_contacto'),
-		'tel_contacto' =>$request->input('tel_contacto'),
-		'tipo_parentesco' =>$request->input('tipo_parentesco')));
+		DatosLocalizacion::where('idEmpleado', $idEmpleado)->update(array(
+			'tel_casa'=> $request->input('tel_casa'),
+			'tel_cel' =>$request->input('tel_cel'),
+			'calle' =>$request->input('calle'),
+			'no_interior' =>$request->input('no_interior'),
+			'no_exterior'=> $request->input('no_exterior'),
+			'idColonia' =>$request->input('idColonia'),
+			'nombre_contacto'=> $request->input('nombre_contacto'),
+			'tel_contacto' =>$request->input('tel_contacto'),
+			'tipo_parentesco' =>$request->input('tipo_parentesco'))
+		);
 
 		$contacto = DatosLocalizacion::where('idEmpleado',$idEmpleado)->first();
 

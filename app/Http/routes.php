@@ -135,7 +135,7 @@ Route::get('autorizaciones/ver_autorizacion-{idAutorizacion}', [
 	]);
 
 
-/* Se esta validando si aun se tienen que usar estas ruta*/
+/* Se esta validando si aun se tienen que usar estas rutas*/
 ##-------------------------------------------------------------
 Route::get('autorizaciones/autorizaciones', [
 	'uses' => 'AutorizacionController@HacerAutorizacion',
@@ -680,7 +680,17 @@ Route::post('proveedores/celiminar-transaccion-{id}', [
 	'as'   => 'celiminar_transaccion'
 	]);
 
+############################ Rutas para cambiar Saldo a Abono ##########################################
+Route::post('proveedores/mostrar_saldos-$transaccion-{id}',[
+	'uses' => 'ProveedorController@ConvertirSaldo',
+	'as' => 'convertirsaldo'
+	]);
 
+Route::get('proveedores/mostrar_saldos-transaccion-{id}',[
+	'uses' => 'ProveedorController@MostrarSaldo',
+	'as' => 'mostrarsaldo'
+	]);
+#########################################################################################################
 
 Route::get('proveedores/reporte', [
 	'uses' => 'ProveedorController@buscarReporte',
@@ -716,6 +726,7 @@ Route::post('proveedores/subirTransaccion', [
 	'uses' => 'ProveedorController@subirTransacciones',
 	'as'   => 'proveedores/subirTransaccion' //cambie el nombre de la ruta
 	]);
+
 
 #### rutas para nomina####
 Route::get('nomina/exportar', [

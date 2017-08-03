@@ -264,6 +264,7 @@ var fechas=[];
 		fechas.push( {"fecha": "{{$requerimiento->fecha_ingreso}}"});
 		requerimientos.push({"requerimiento": "{{$requerimiento->requerimiento}}"});
 		
+		
 @endforeach 
 var unicos =$.unique(fechas);
 var bdata = {
@@ -277,7 +278,8 @@ var bdata = {
                 strokeColor: "rgba(151,187,205,0.8)",
                 highlightFill: "rgba(151,187,205,0.75)",
                 highlightStroke: "rgba(151,187,205,1)",
-                data : requerimientos.map((el) => el.requerimiento)
+                data : requerimientos.map((el) => el.requerimiento),
+
                 
             }
         ]

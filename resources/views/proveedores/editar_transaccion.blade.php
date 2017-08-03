@@ -41,6 +41,33 @@
 
 			<div class="row">
 				<div class="col-sm-4">
+				<label class="control-label">Categoria<text style="color:red">*</text></label>
+					<div>
+						<select class="form-control" name="categoria" id="categoria"  required="">
+							<option value="">SELECCIONAR</option>
+							<option value="Recursos Humanos">Recursos Humanos</option>
+							<option value="Logistica">Logistica</option>
+							<option value="Servicios Generales">Servicios Generales</option>
+							<option value="Sistemas">Sistemas</option>
+							<option value="Reclutamiento">Reclutamiento</option>
+							<option value="Contabilidad">Contabilidad</option>
+							<option value="Ingresos">Ingresos</option>
+							<option value="Reembolos a los Clientes">Reembolsos a los Clientes</option>
+						</select>	
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<label class="control-label">SubCategoria<text style="color:red">*</text></label>
+					<input class="form-control" name="subcategoria" id="subcategoria"  value="{{$transaccion->subcategoria}}" required="">
+				</div>
+				<div class="col-sm-4">
+					<label class="control-label">Codigo<text style="color:red">*</text></label>
+					<input class="form-control" name="codigo" id="codigo" value="{{$transaccion->codigo}}" required="">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-4">
 					<label class="control-label">Semana <text style="color:red">*</text></label>
 					<select class="form-control" name="semana">
 						@for($i = 1; $i < 53; $i++)

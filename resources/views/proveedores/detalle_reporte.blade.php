@@ -185,6 +185,7 @@ img {
 					<th NOWRAP>fecha de pago</th>
 					<th># cheque</th>
 
+
 				</tr>
 </thead>
 				</table>

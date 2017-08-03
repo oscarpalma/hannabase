@@ -220,7 +220,7 @@
             $('#input' + num).remove();
             $('#btnAdd').attr('enabled','enabled');
 
-            if (num-1 == 1)
+            if (newNum == 1)
                 $('#btnDel').attr('enabled','enabled');
         });
 
