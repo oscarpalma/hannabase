@@ -182,39 +182,40 @@ class ClienteController extends Controller {
 			return redirect()->route('login');
 
 		elseif(Auth::user()->role == 'administrador'){
+
 			$clientes = Cliente::all();
-			$info = ['clientes' => $clientes];
+			$turnos = Turno::all();
+			$info = ['clientes'=>$clientes, 'turnos'=>$turnos];
 			return view('clientes/requerimiento')->with('info',$info);
 		}
 			
 	}
 
-
+	##Metodo POST para guardar los datos que se ingresaron en el formulario,una vez echo el registro,regresa a la vista
 	public function requerimiento_post(Request $request)
 	{
-		//
-		if(Auth::guest())
-				return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador']))
+		
+		if(in_array(Auth::user()->role, ['administrador','recepcion','supervisor','contabilidad']))
 		{
+			$cliente = Cliente::where('idCliente',$request->input('cliente'))->first();
+			$turno = Turno::where('idTurno',$request->input('turno'))->first();
 			$fecha = new DateTime($request->input('fecha_ingreso'));
 			$requerimiento = new Requerimiento([
 
-					'requerimiento' => $request->input('requerimiento'),
-					'ingreso' => $request->input('ingreso'),
-					'fecha_ingreso' => $fecha,
-					'semana' => $fecha->format('W'),
-					'idcliente' => $request->input('cliente'),
-					'idusuario' => Auth::user()->id
-
+				'idcliente' => $request->input('cliente'),
+				'idturno' => $request->input('turno'),
+				'fecha_ingreso' => $request->input('fecha_ingreso'),
+				'requerimiento' => $request->input('requerimiento'),
+				'ingreso' => $request->input('ingreso'),
+				'semana' => $fecha->format('W'),
+				'idusuario' => Auth::user()->id	
 				]);
 
 			$requerimiento->save();
 
 			return redirect()->route('requerimiento')->withInput()->with('mensaje','Registro exitoso');
-
 		}
+
 		else
 			return view('errors/restringido');
 	}
@@ -316,7 +317,7 @@ class ClienteController extends Controller {
 			
 			$clientes = Cliente::all();
 			$idcliente = Cliente::where('idcliente', $idcliente)->first();
-			$info = ['clientes' => $clientes, 'requerimientos'=>$requerimientos, 'ingreso'=>$ingreso]; //parametros para filtrar la busqueda
+			$info = ['clientes' => $clientes, 'requerimientos'=>$requerimientos]; //parametros para filtrar la busqueda
 			return view('clientes/reporte')->with('info',$info);	
 		}
 

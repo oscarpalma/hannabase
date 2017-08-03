@@ -1,31 +1,15 @@
 @extends('layouts.dashboard')
-@section('page_heading','Generar Reporte de Requerimiento')
+@section('page_heading','Generar Reporte')
 @section('head')
-<link rel="stylesheet" href="{{ asset("assets/stylesheets/select2.css") }}" />
-<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.common.min.css"/>
-    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.rtl.min.css"/>
-    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.silver.min.css"/>
-    <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2016.2.607/styles/kendo.mobile.all.min.css"/>
-
-    
-    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @stop
 @section('section')
 
-
-@if(Session::has('mensaje'))
-    <script type="text/javascript">
-        window.onload = function(){ alert("{{Session::get('mensaje')}}");}
-    </script>
+@if(Session::has('message'))
+	<script type="text/javascript">
+		window.onload = function(){ alert("{{Session::get('message')}}");}
+	</script>
 @endif
-
-<!--
-<script>
-  $(document).ready(function(){
-    $(".time_element").timepicki();
-  });
-</script>
--->
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('clientes/reporte') }}" id="detalle_reporte" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -39,14 +23,22 @@
 			<div class="col-sm-4">
 				<label class="control-label">Empresa<text style="color:red">*</text></label>
 					<div>
-						<select class="form-control" name="cliente" id="clientes" required="">
+						<select class="form-control" name="cliente" id="cliente" required="">
 							<option value="">SELECCIONAR</option>
 							@foreach($info['clientes'] as $clientes)
 								<option  value="{{$clientes->idCliente}}">{{$clientes->nombre}}</option>
 							@endforeach
 						</select>	
 					</div>
-			</div>		
+			</div>	
+			<div class="col-sm-4">
+					<label class="control-label">Turno <text style="color:red">*</text></label>
+				<div >
+					<select class="form-control" name="turno" id="turno">
+						<option value="">SELECCIONAR</option>
+					</select>
+				</div>
+			</div>	
 				<div class="col-sm-4">
 					<label class="control-label">Por <text style="color:red">*</text></label>
 					<div>
@@ -133,12 +125,14 @@
 	});
 </script>
 
+
 @if(isset($info['requerimientos']))
-@if(count($info['ingreso'])>0)
+
+
 
 	<br>
 	
-	<h1>Reporte </h1>
+	<h1>Reporte - {{$clientes->nombre}} </h1>
 	
 	<br>
 
@@ -149,10 +143,10 @@
 				
 
 				<tr>
-					<th>Cliente</th>
 					<th>Fecha de Captura</th>
 					<th>Requerimiento</th>
 					<th>Ingreso</th>
+					<th>Turno</th>
 
 				</tr>
 
@@ -165,32 +159,35 @@
 					$dias =[
 					'Monday' => 'Lunes',
 					'Tuesday' => 'Martes',
-					'Wensday' => 'Miercoles',
+					'Wendsday' => 'Miercoles',
 					'Thursday' => 'Jueves',
-					'Friday'   => 'Friday',
+					'Friday'   => 'Viernes',
 					'Saturday'  => 'Sabado',
-					'Sunday'  => 'Domingo'];
+					'Sunday'  => 'Domingo'
+					];
 				?>
+
+				
 
 				
 			</thead>
 
 			<tbody>
+
+
 				
 				@foreach($info['requerimientos'] as $requerimiento)
 					<tr>
-						<td>{{$requerimiento->idcliente}}</td>
 						<td>{{$requerimiento->fecha_ingreso}}</td>
 						<td>{{$requerimiento->requerimiento}}</td>
 						<td>{{$requerimiento->ingreso}}</td>
+						<td>{{$requerimiento->idturno}}</td>
 								
 					</tr>
 			@endforeach
 			</tbody>
 
 		</table>
-
-
 
 	</div>
 	<br>
@@ -201,35 +198,25 @@
 		</div>
 	</div>
 
-<button onclick="imprimir();" class="btn btn-primary">Exportar a PDF</button>
+
 <br>
 
 	<br><br>
-	@else
-<div class="alert alert-info alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>¡Sin resultado!</strong> No se encontro ningun resultado con los parametros especificados.<br><br> 
-				
-			</div> 
-
-
 
 
 @endif
-@endif
- 
 <script>
 
 
 
-    $(document).ready(function () {
+       $(document).ready(function () {
        
     
- 		$("#proveedor").select2();
-		$("#cliente").select2();
+ 		//$("#").select2();
+		//$("#").select2();
 
 	$('#cliente').on('change', function(e){
-    console.log(e);
+    
     var idCliente = e.target.value;
 	$("#cliente option[value='null']").hide();
 	
@@ -252,21 +239,36 @@
 	}
 });
 
+function get_nombre_dia($fecha)
+{
+	fechats = strtotime($fecha);
 
-	
-//number_format($parametros['total_saldo'],2)
-@if(isset($i))
-var semanas=[];
+		switch (date('w', $fechats)){
+	    case 0: return "Domingo"; break;
+	    case 1: return "Lunes"; break;
+	    case 2: return "Martes"; break;
+	    case 3: return "Miercoles"; break;
+	    case 4: return "Jueves"; break;
+	    case 5: return "Viernes"; break;
+	    case 6: return "Sabado"; break;
+	}
+}
+
+@if(isset($info['requerimientos']))
 var requerimientos=[];
+var ingresos=[];
+var semanas=[];
+var fechas=[];
 
 @foreach ($info['requerimientos'] as $requerimiento)
-		semanas.push( {"semana": "{{$transaccion->semana}}"});
-		requerimientos.push( {"requerimiento": "{{$requerimiento->requerimiento}}"});
+		fechas.push( {"fecha": "{{$requerimiento->fecha_ingreso}}"});
+		requerimientos.push({"requerimiento": "{{$requerimiento->requerimiento}}"});
+		
 @endforeach 
-var unicos =$.unique(semanas);
+var unicos =$.unique(fechas);
 var bdata = {
 
-        labels : semanas.map((el) => el.semana),
+        labels : fechas.map((el) => el.fecha),
         datasets : [
             
             {
@@ -275,7 +277,8 @@ var bdata = {
                 strokeColor: "rgba(151,187,205,0.8)",
                 highlightFill: "rgba(151,187,205,0.75)",
                 highlightStroke: "rgba(151,187,205,1)",
-                data : cargos.map((el) => el.cargo)
+                data : requerimientos.map((el) => el.requerimiento)
+                
             }
         ]
 
@@ -290,239 +293,14 @@ var bdata = {
 
     });
 
-
-   
-   // function imprimir(){
-
-   // 	var cbarr = document.getElementById("cbar");
-   // 	var tabla = document.getElementById("reporte");
-   //   var win=window.open();
-   //   	//alert(cbarr.toDataURL());
-
-   //      win.document.write("<br><img src='"+cbarr.toDataURL()+"'/>"+tabla);
-   //      win.print();
-   //      win.location.reload();
-   // }
-
 </script>
+
 <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
 <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
 <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
 
 <script type="text/javascript">
-    jQuery(function ($) {
-        $("#exportButton").click(function () {
-            // parse the HTML table element having an id=exportTable
-            var dataSource = shield.DataSource.create({
-                data: "#exportTable",
-                schema: {
-                    type: "table",
-                    fields: {
-                        FACTURA: { type: String },
-                        Age: { type: Number },
-                        Email: { type: String }
-                    }
-                }
-            });
 
-            // when parsing is done, export the data to PDF
-            dataSource.read().then(function (data) {
-                var pdf = new shield.exp.PDFDocument({
-                    author: "PrepBootstrap",
-                    created: new Date()
-                });
-
-                pdf.addPage("a4", "portrait");
-
-                pdf.table(
-                    50,
-                    50,
-                    data,
-                    [
-                        { field: "Name", title: "Person Name", width: 200 },
-                        { field: "Age", title: "Age", width: 50 },
-                        { field: "Email", title: "Email Address", width: 200 }
-                    ],
-                    {
-                        margins: {
-                            top: 50,
-                            left: 50
-                        }
-                    }
-                );
-
-                pdf.saveAs({
-                    fileName: "PrepBootstrapPDF"
-                });
-            });
-        });
-    });
-
-    @if(isset($i))
-    function imprimir(){
-var cbarr = document.getElementById("cbar");
-
-var imgData = cbarr.toDataURL("");
-
-var doc = new jsPDF('landscape','pt','letter' ,'p');
-
-doc.setFontSize(8);
-doc.text(295, 50, "CORE RESOURCES TRADING AND MANAGEMENT S DE RL DE CV",0);
-doc.text(305, 60, "ACAD-09 HISTORIAL DE FACTURAS DE PROVEEDORES",0);
-doc.text(10, 70, "PROVEEDOR: {{strtoupper($parametros['proveedor']->nombre)}}",0);
-doc.text(10, 80, "CONTACTO: {{strtoupper($parametros['proveedor']->contacto)}}",0);
-doc.text(10, 90, "TELEFONO: {{strtoupper($parametros['proveedor']->telefono)}}",0);
-doc.text(10, 100, "EMAIL: {{strtoupper($parametros['proveedor']->email)}}",0);
-doc.text(10, 110, "CREDITO: {{strtoupper($parametros['proveedor']->credito)}}",0);
-doc.addImage(imgData, 250, 80, 330, 120);
-//var columns = ["#", "FACTURA", "PROVEEDOR","CONCEPTO", "WEEK", "ISSUE DATE", "DUE DATE", "CARGO", "ABONO", "SALDO","PROG DE PAGO","FECHA DE PAGO","#CHEQUE"];
-var columns = [
-    {title: "ID", dataKey: "id"},
-    {title: "REQUERIMIENTO", dataKey: "requerimiento"}, 
-    
-    {title: "INGRESO", dataKey: "ingreso"},
-    {title: "FECHA", dataKey: "fecha_ingreso"},
-    {title: "CLIENTE", datakey: "cliente"}
-   
-];
-
-var datos=[];
-var cargos=[];
-var rows = [];
-var i=1;
-@foreach ($info['requerimientos'] as $requerimiento)
-		rows.push( {"id": i, "requerimiento" : "{{$requerimiento->requerimiento}}", "ingreso": "{{$requerimiento->ingreso}}", "issue": "{{$requerimiento->fecha_ingreso}}", "cliente":
-			"{{$requerimiento->cliente}}" });
-		i= i+1;
-		
-@endforeach
-rows.push( {"id": "", "requerimiento" : "", "ingreso": "", "cliente": "", "fecha_ingreso":""});
-
-    
-var options ;
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 8,
-    lineHeight: 15,
-    theme: 'grid',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    renderHeaderCell: function (x, y, width, height, key, value, settings) {
-        doc.setFillColor(52, 73, 94); // Asphalt
-        doc.setTextColor(255, 255, 255);
-        doc.setFontStyle('bold');
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    margin: {  top: 220 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
-var columns = [
-    {title: "PREPARADO", dataKey: "preparado"},
-    {title: "GERENTE GRAL.", dataKey: "gerente"}, 
-    
-    {title: "DIRECTOR", dataKey: "director"},
-    {title: "PRESIDENTE", dataKey: "presidente"},
-    
-   
-];
-var rows = [
-    { "PREPARADO": "     ",
-    "GERENTE GRAL.": " ", 
-    
-    "DIRECTOR": "  ",
-     "PRESIDENTE": "  "},
-    
-   
-];
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 10,
-    lineHeight: 30,
-    theme: 'grid',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, 50, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-
-    },
-    margin: {  top: 500, right: 400 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
-
-var columns = [
-    {title: "", dataKey: "preparado"},
-     {title: "", dataKey: "cantidad"},
-    
-    
-   
-];
-var rows = [
-    { "preparado": "SALDO", "cantidad": "$ {{number_format($parametros['total_saldo'],2)}}"},
-    //{"preparado": "LIMITE DE CREDITO", "cantidad": "$ 291,890.23"}, 
-    
-   // {"preparado": "BALANCE EN CREDITO", "cantidad": "$ 291,890.23"},
-     
-    
-   
-];
-
-doc.autoTable(columns, rows,{
-    padding: 3, // Horizontal cell padding
-    fontSize: 8,
-    lineHeight: 15,
-    theme: 'plain',
-    renderHeader: function (doc, pageNumber, settings) {}, // Called before every page
-    renderFooter: function (doc, lastCellPos, pageNumber, settings) {}, // Called at the end of every page
-    renderHeaderCell: function (x, y, width, height, key, value, settings) {
-        doc.setFillColor(52, 73, 94); // Asphalt
-        doc.setTextColor(255, 255, 255);
-        doc.setFontStyle('bold');
-        doc.rect(x, y, 20, 20, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-    },
-    renderCell: function (x, y, width, height, key, value, row, settings) {
-        doc.setFillColor(row % 2 === 0 ? 245 : 255);
-        doc.rect(x, y, width, height, 'F');
-        y += settings.lineHeight / 2 + doc.internal.getLineHeight() / 2 - 2.5;
-        doc.text('' + value, x + settings.padding, y);
-        
-    },
-    margin: {  top: 490, right: 100, left:500 }, // How much space around the table
-    startY: false, // The start Y position on the first page. If set to false, top margin is used
-    overflow: 'ellipsize', // false, ellipsize or linebreak (false passes the raw text to renderCell)
-    overflowColumns: false, // Specify which colums that gets subjected to the overflow method chosen. false indicates all
-    avoidPageSplit: false, // Avoid splitting table over multiple pages (starts drawing table on fresh page instead). Only relevant if startY option is set.
-    extendWidth: true // If true, the table will span 100% of page width minus horizontal margins.
- });
-
-
-
-doc.save('reporte');
-
-	    	
-	    }
-	    @endif
 </script>
 
 

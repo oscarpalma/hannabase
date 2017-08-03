@@ -59,7 +59,7 @@ class MensajeController extends Controller {
 		} 
 	}else if ($tipo==='usuarios'){
 
-		$notificacion = new Notificacion();
+			$notificacion = new Notificacion();
 		    $notificacion->destinatario = $request->input('usuario');
 		    $notificacion->mensaje = $request->input('mensaje');
 			$notificacion->fecha = (new DateTime('now'))->format('Y-m-d H:i:s');
