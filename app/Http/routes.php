@@ -589,6 +589,25 @@ Route::get('tomar-foto',[
 	'as' =>'tomar-foto'
 	]);
 
+Route::get('filtro/verDescuentos',[
+	'as' => 'verDescuentos',
+	'uses' => 'Filtro\DescuentosController@verDescuentos_get'
+	]);
+
+Route::post('filtro/verDescuentos',[
+	'as' => 'verDescuentos',
+	'uses' => 'Filtro\DescuentosController@verDescuentos_post'
+	]);
+
+Route::get('filtro/eliminarDescuento-{id}', [
+	'uses' => 'Filtro\DescuentosController@eliminar_descuento',
+	'as'   => 'Celiminar_descuento'
+	]);
+
+Route::post('filtro/eliminarDescuento-{id}', [
+	'uses' => 'Filtro\DescuentosController@eliminar',
+	'as'   => 'Celiminar_descuento'
+	]);
 
 
 ####  ADMINISTRADOR  #####
@@ -771,7 +790,12 @@ Route::post('inventario/cantidad',[
 	]);
 
 Route::get('inventario/lista', [
-	'uses' => 'MaterialController@mostrarInventario',
+	'uses' => 'MaterialController@mostrarInventario_get',
+	'as'   => 'inventario_lista'
+	]);
+
+Route::post('inventario/lista', [
+	'uses' => 'MaterialController@mostrarInventario_post',
 	'as'   => 'inventario_lista'
 	]);
 
@@ -801,7 +825,7 @@ Route::post('empleados/historial', [
 	'as'   => 'historial'
 	]);
 
-## Requerimientos por Cliente
+## Requerimientos por Turno
 Route::get('clientes/requerimiento', [
 	'uses' => 'ClienteController@requerimiento_get',
 	'as'   => 'requerimiento'
@@ -810,21 +834,6 @@ Route::get('clientes/requerimiento', [
 Route::post('clientes/requerimiento', [
 	'uses' => 'ClienteController@requerimiento_post',
 	'as'   => 'requerimiento'
-	]);
-
-Route::get('clientes/reporte', [
-	'uses' => 'ClienteController@buscarReporte',
-	'as'   => 'clientes/reporte'
-	]);
-
-Route::post('clientes/reporte', [
-	'uses' => 'ClienteController@generarReporte',
-	'as'   => 'clientes/reporte'
-	]);
-
-Route::get('clientes/detalle/reporte', [
-	'uses' => 'ClienteController@detalleReporte',
-	'as'   => 'clientes/imprimir_reporte' //cambie el nombre de la ruta
 	]);
 
 
@@ -898,3 +907,41 @@ Route::post('ajax-foto-credencial', function(){
                  ->update(['foto' => 'fotos/' . $name]);
 		return Response::json(['empleados' => Input::get('image')]);
 });
+
+
+##### KPI  ######
+
+Route::get('kpi/alta/tipo', [
+	'uses' => 'KpiController@alta_tipoKpi_get',
+	'as'   => 'tipo_kpi'
+	]);
+
+Route::post('kpi/alta/tipo', [
+	'uses' => 'KpiController@alta_tipoKpi_post',
+	'as'   => 'tipo_kpi'
+	]);
+
+Route::get('kpi/alta/logro', [
+	'uses' => 'KpiController@alta_logro_get',
+	'as'   => 'logro'
+	]);
+
+Route::post('kpi/alta/logro', [
+	'uses' => 'KpiController@alta_logro_post',
+	'as'   => 'logro'
+	]);
+
+Route::get('kpi/obtenerLogros', [
+	'uses' => 'KpiController@obtener_tipoKpi_ajax',
+	'as'   => 'obtener_logros_ajax'
+	]);
+
+Route::get('kpi/reporte', [
+	'uses' => 'KpiController@reporte_get',
+	'as'   => 'kpi_reporte'
+	]);
+
+Route::post('kpi/reporte', [
+	'uses' => 'KpiController@reporte_post',
+	'as'   => 'kpi_reporte'
+	]);

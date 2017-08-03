@@ -63,6 +63,72 @@ class DescuentosController extends Controller {
 		return redirect()->route('filtro_descuentos')->withInput()->with('success','Descuento registrado con éxito');
 	}
 
+	public function verDescuentos_get()
+	{
+		
+
+		if(in_array(Auth::user()->role, ['administrador','recepcion','supervisor','contabilidad'])){
+			
+			return view('filtro/listado_descuentos');
+		}
+
+		else
+			return view('errors/restringido');
+	}
+
+	public function verDescuentos_post(Request $request)
+	{
+		
+
+		if(in_array(Auth::user()->role, ['administrador','recepcion','supervisor','contabilidad'])){
+			$semana = $request->input('semana');
+			$descuentos = Descuento::where('semana',$semana)->orderBy('fecha')->get();
+			$informacion = array();
+
+			foreach ($descuentos as $descuento) {
+				$empleado=Empleado::find($descuento->empleado);
+				$tipoDescuento=TipoDescuento::find($descuento->descuento);
+				$info['no_empleado']=$descuento->empleado;
+				$info['nombre']= $empleado->ap_paterno.' '.$empleado->ap_materno.', '.$empleado->nombres;
+				$info['material']=$tipoDescuento->nombre_descuento;
+				$info['precio']=$tipoDescuento->precio;
+				$info['fecha']=$descuento->fecha;
+				$info['id']=$descuento->id_descuentos;
+				array_push($informacion,$info);
+			}
+			return view('filtro/listado_descuentos') -> with ('descuentos',$informacion)-> with ('semana',$semana);
+		}
+
+		else
+			return view('errors/restringido');
+	}
+
+	public function eliminar_descuento($id){
+		
+		if(in_array(Auth::user()->role, ['administrador','contabilidad','recepcion'])){
+			$descuento = Descuento::where('id_descuentos',$id)->first();
+			$empleado=Empleado::find($descuento->empleado);
+			$tipoDescuento=TipoDescuento::find($descuento->descuento);
+			$info['no_empleado']=$descuento->empleado;
+			$info['nombre']= $empleado->ap_paterno.' '.$empleado->ap_materno.', '.$empleado->nombres;
+			$info['material']=$tipoDescuento->nombre_descuento;
+			$info['precio']=$tipoDescuento->precio;
+			$info['fecha']=$descuento->fecha;
+
+			return view('filtro/confirmar')->with('descuento',$info)->with('id',$id);
+		}
+
+		else
+			return view('errors/restringido');
+	}
+
+	public function eliminar($id){
+		$descuento = Descuento::where('id_descuentos',$id)->first();
+		$descuento->delete();
+
+		return redirect()->route('verDescuentos')->with('success','exitoso');
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *

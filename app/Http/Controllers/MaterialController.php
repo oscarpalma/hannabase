@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Inventario;
 use App\MaterialSistemas;
-use App\AreaCt;
+use App\AreaInventario;
 use Auth;
 use Validator;
 use DateTime;
@@ -20,12 +20,9 @@ class MaterialController extends Controller {
 	 */
 	public function alta_get()
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
-		else if(in_array(Auth::user()->role,['administrador','contabilidad'])){
-
-			$areas = AreaCt::all();
+			$areas = AreaInventario::all();
 			return view('inventario/alta_inventario')->with('areas',$areas);
 			}
 
@@ -37,10 +34,8 @@ class MaterialController extends Controller {
 	
 	public function alta_post(Request $request)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role,['administrador','contabilidad'])){
+		
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
 			$rules = ['image' => 'required|image|max:1024*1024*1',];
         $messages = [
@@ -89,7 +84,7 @@ class MaterialController extends Controller {
             $material->save();
             $material->codigoBarras = $material->id.$area.$fecha->format('d').$fecha->format('m').$fecha->format('y');
             $material->save();
-            if($area==24 and $request->input('tipo')=='computadora'){
+            if($area==7 and $request->input('tipo')=='computadora'){
             	
             	if ($request->input('antivirus')) {
 					   $antivirus=1;
@@ -120,12 +115,9 @@ class MaterialController extends Controller {
 
 	public function administrar_get()
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
-		else if(in_array(Auth::user()->role,['administrador','contabilidad'])){
-
-			$areas = AreaCt::all();
+			$areas = AreaInventario::all();
 			return view('inventario/administrar')->with('areas',$areas);
 			}
 
@@ -135,10 +127,7 @@ class MaterialController extends Controller {
 
 	public function administrar_post(Request $request)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role,['administrador','contabilidad'])){
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
 			$codigo = $request->input('codigo');
 			$material = Inventario::where('codigoBarras',$codigo)->first();
@@ -154,7 +143,7 @@ class MaterialController extends Controller {
 				$arr['estado'] = $material->estado;
 				$arr['area'] = $material->area;
 				$arr['foto'] = $material->foto;
-				if ($material->area==24){
+				if ($material->area==7){
 					$materialSistemas = MaterialSistemas::where('idMaterial',$material->id)->first();
 					if($materialSistemas){
 						$arr['contrasena'] = $materialSistemas->contrasena;
@@ -176,7 +165,7 @@ class MaterialController extends Controller {
 	{
 		
 
-		if(in_array(Auth::user()->role,['administrador','contabilidad'])){
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
 			
 			return view('inventario/modificar_cantidad');
@@ -190,7 +179,7 @@ class MaterialController extends Controller {
 	{
 		
 
-		if(in_array(Auth::user()->role,['administrador','contabilidad'])){
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
 			$codigo = $request->input('codigo');
 			$cantidad = $request->input('cantidad');
@@ -209,7 +198,7 @@ class MaterialController extends Controller {
 					$material->precioTotal = $total;
 
 				}elseif($opcion=='disminuir'){
-					if($unidades>$cantidad){
+					if($cantidad<=$unidades){
 						$cantidad=$unidades-$cantidad;
 						$total=$cantidad*$precioUnitario;
 
@@ -243,14 +232,28 @@ class MaterialController extends Controller {
 	 * @return Response
 	 */
 
-	public function mostrarInventario()
+	public function mostrarInventario_get()
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
+		if(in_array(Auth::user()->role, ['administrador','gerente'])){
 
-		else if(in_array(Auth::user()->role, ['administrador','supervisor'])){
+		return view('inventario/lista_inventario')->with('areas',AreaInventario::all());
 
-		return view('inventario/lista_inventario')->with('inventario',Inventario::all());
+		}
+		else
+			return view('errors/restringido');
+	}
+
+	public function mostrarInventario_post(Request $request)
+	{
+		if(in_array(Auth::user()->role, ['administrador','gerente'])){
+		$area = $request->input('area');
+
+		if($area == 'todas'){
+			$inventario=Inventario::all();
+		}else{
+			$inventario=Inventario::where('area',$area)->get();
+		}
+		return view('inventario/lista_inventario')->with('inventario',$inventario)->with('areas',AreaInventario::all());
 
 		}
 		else
@@ -266,7 +269,7 @@ class MaterialController extends Controller {
 	{
 		
 
-		if(in_array(Auth::user()->role,['administrador','contabilidad'])){
+		if(in_array(Auth::user()->role,['administrador','gerente'])){
 
 			$area= $request->input('area');
         	$precioUnitario = $request->input('precio');
@@ -297,7 +300,7 @@ class MaterialController extends Controller {
             $material->save();
            //$material->codigoBarras = $material->id.$area.$fecha->format('d').$fecha->format('m').$fecha->format('y');
             //$material->save();
-            if($area==24 and $request->input('tipo')=='computadora'){
+            if($area==7 and $request->input('tipo')=='computadora'){
             	
             	if ($request->input('antivirus')) {
 					   $antivirus=1;

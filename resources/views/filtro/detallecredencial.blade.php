@@ -1,5 +1,6 @@
 <html>
 <head>
+<link rel="stylesheet" href="{{ asset('assets/stylesheets/styles.css') }}" async/>
 <style>
 	body {
 	    width: 100%;
@@ -53,22 +54,60 @@
 		height:130px;
 		width: 32%;
 		position:absolute;
+		top: 55px;
+		left: 129px;
 		bottom:0px;
 		text-transform: capitalize;
+	}
+	.direccion {
+		color: #fff;
+		
+		width: 100%;
+		position:absolute;
+		top: 168px;
+		left: 10px;
+		bottom:0px;
+		text-transform: capitalize;
+		font: 8.5pt "Arial";
+
+	}
+	.telefono {
+		color: #fff;
+		
+		width: 100%;
+		position:absolute;
+		top: 188px;
+		left: 10px;
+		bottom:0px;
+		text-transform: capitalize;
+		font: 8.5pt "Arial";
+
 	}
 	.texto2 {
 		color: #000;
 		height:250px;
 		width: 105%;
 		position:absolute;
+		top: 290px;
+		left: -169px;
 		bottom:0px;
-		text-transform: uppercase;
+		text-transform: capitalize;
 		font: 8pt "Arial";
 	}
 	.foto {
   position: absolute;
-  top:  69px; 
-  left: 59px;
+  top:  42px; 
+  left: 9px;
+	}
+	.logocover {
+  position: absolute;
+  top:  7px; 
+  left: 230px;
+	}
+	.logorecover {
+  position: absolute;
+  top:  404px; 
+  left: 10px;
 	}
 </style>
 </head>
@@ -77,29 +116,44 @@
 @if(isset($credencial))
 
  		<div class="wrapper-images">
-			<img src="../../imagenes/Credencial1.png" width="224" height="351"/>
-			<img src="{{url($credencial['foto'])}}" width="105" height="136" class="foto" />
+			<img src="../../imagenes/cover.png" width="351" height="224"/>
+			<img src="../../imagenes/logocover.png" width="110" class="logocover" />
+			<img src="{{url($credencial['foto'])}}" width="85" height="106" class="foto img-circle" />
 			<div class="texto">
 
-			<center>
+			
 				<strong>No.Empleado:</strong> {{$credencial['noempleado']}} <br>
 				<strong>Nombre:</strong>{{$credencial['nombre']}} <br> {{$credencial['apellidos']}}<br><br>
 				<!--Modificar para el personal de oficina-->
 				<strong>Puesto:</strong>Operador
-			</center>
+			
 			</div>
-			<img src="../../imagenes/Credencial2.png" width="224" height="351"/>
+			<div class="direccion">
+
+			
+				<strong>Plaza Wahoo Florido 1era. Seccion Tijuana, Baja California.</strong> 
+				
+			</div>
+			<div class="telefono">
+
+			
+				<strong>Tel: 3-81-51-32</strong> 
+				
+			</div>
+			<br><br>
+			<img src="../../imagenes/recoverxp.png" width="351" height="224"/>
+			<img src="../../imagenes/logorecover.png" width="45" class="logorecover" />
 			<div class="texto2">
 			<center>
-				<strong>Curp: </strong>{{$credencial['curp']}}<br> 
+				<strong>CURP: </strong>{{$credencial['curp']}}<br> 
 				<strong>RFC: </strong>{{$credencial['rfc']}}<br> 
 				<strong>No.IMSS:</strong>{{$credencial['noimss']}}<br> <br> <br> 
 				<strong>En Emergencia llamar a: </strong><br>
 				{{$credencial['nombre_contacto']}} <br>
 				<strong>Telefono: </strong>{{$credencial['tel_contacto']}}<br> <br> 
 				<!--Modificar para el personal de oficina-->
-				<strong>Area:</strong> Area <br>
-				<strong>Encargado:</strong> Encargado
+				<!--<strong>Area:</strong> Area <br>
+				<strong>Encargado:</strong> Encargado-->
 			</center>
 			</div>
 		</div>
