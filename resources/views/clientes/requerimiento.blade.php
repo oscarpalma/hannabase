@@ -18,7 +18,13 @@
         window.onload = function(){ alert("{{Session::get('mensaje')}}");}
     </script>
 @endif
-
+<!--
+<script>
+  $(document).ready(function(){
+    $(".time_element").timepicki();
+  });
+</script>
+-->
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('requerimiento') }}" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -35,20 +41,11 @@
 						<select class="form-control" name="cliente" id="cliente" required="">
 							<option value="">SELECCIONAR</option>
 							@foreach($info['clientes'] as $cliente)
-								<option name="{{$cliente->idCliente}}" value="{{$cliente->idCliente}}">{{$cliente->nombre}}</option>
+								<option  value="{{$cliente->idCliente}}">{{$cliente->nombre}}</option>
 							@endforeach
 						</select>	
 					</div>
-			</div>	
-
-			<div class="col-sm-4">
-					<label class="control-label">Turno <text style="color:red">*</text></label>
-				<div >
-					<select class="form-control" name="turno" id="turno">
-						<option value="">SELECCIONAR</option>
-					</select>
-				</div>
-			</div>	
+			</div>		
 				<div class="col-sm-4">
 					<label class="control-label">Fecha <text style="color:red">*</text></label>
 					<div >
@@ -85,43 +82,6 @@
 		</div>
 	</div>
 </form>
-
-
-<script type="text/javascript">
-
-	$(document).ready(function() {
-
-		//$("#turno").select2();
-		//$("#cliente").select2();
-
-	$('#cliente').on('change', function(e){
-    
-    var idCliente = e.target.value;
-	$("#cliente option[value='null']").hide();
-	
-    if($("#cliente").val() != "null"){
-
-	    $.get('/ajax-cliente?idCliente=' + idCliente, function(data) {
-	    	//console.log(data);
-
-	    	//Muestra los turnos segun el cliente que se ha seleccionado
-	       	$('#turno').empty();
-	       	$.each(data,function(index,turnosObj){
-	       	$('#turno').append('<option value="'+turnosObj.idTurno+'">'+turnosObj.hora_entrada+" - "+turnosObj.hora_salida+'</option>');
-	       	});
-
-	    });
-	}
-
-	else{
-		$('#turno').empty();
-	}
-
-	});	
-
-});
-
-</script>
 @stop
 
 

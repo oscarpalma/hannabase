@@ -338,7 +338,79 @@ class ProveedorController extends Controller {
 
 	public function detalleReporte(Request $request)
 	{
-		
+		if(Auth::guest())
+			return redirect()->route('login');
+
+		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
+
+			// return view('proveedores/detalle_reporte');		
+			$proveedor = $request->input('proveedor');
+			$forma = $request->input('por');
+
+			//queryFechas se encarga de delimitar el periodo de tiempo
+			if($forma == 'semana')
+				$queryFechas = "semana = '" . $request->input('valor') . "'";
+
+			elseif($forma == 'mes'){
+				$fechaActual = new DateTime('now');
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				//el primer dia del mes dado
+				$fecha1->setDate($fechaActual->format('Y'),$request->input('valor'),1); 
+				
+				//el primer dia del siguiente mes
+				if($request->input('valor') == 12)
+					//si es diciembre, tomar enero como el siguiente dia
+					$fecha2 = setDate(($fechaActual->format('Y')+1), 1, 1);
+				
+				else
+					$fecha2->setDate($fechaActual->format('Y'),($request->input('valor')+1),1); 
+
+				//restar un dia a la segunda fecha para que sea el ultimo dia del mes
+				$fecha2->sub(new DateInterval('P1D'));
+
+
+			$queryFechas = "fecha_captura BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			else {//año
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				$year = $request->input('valor');
+
+				$fecha1->setDate($year,1,1); //primer dia del año
+				$fecha2->setDate($year,12,31); //ultimo dia del año
+				
+				$queryFechas = "fecha_captura BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			//si no especifica proveedor, ignorar del query
+			if($proveedor == 'todos'){
+				$queryProveedor = "";
+			}
+
+			else
+				$queryProveedor = " AND proveedor = '" . $request->input('proveedor') . "'";
+
+			$transacciones = Transaccion::whereRaw($queryFechas.$queryProveedor)->	orderBy('semana')->get();
+
+
+			$total_cargo=0;
+			$total_abono=0;
+			$total_saldo=0;
+			
+			foreach ($transacciones as $transaccion) {
+				$total_cargo += $transaccion->cargo;
+				$total_abono += $transaccion->abono;
+				$total_saldo += $transaccion->saldo;
+			}
+			$proveedores = Proveedor::all();
+			$parametros = ['proveedores' => $proveedores, 'transacciones'=>$transacciones,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo]; //parametros para filtrar la busqueda
+			return view('proveedores/detalle_reporte')->with('parametros',$parametros);	
+		}
+
+		else
+			return view('errors/restringido');
 
 		
 	}
