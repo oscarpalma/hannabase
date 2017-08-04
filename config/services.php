@@ -15,8 +15,8 @@ return [
 	*/
 
 	'mailgun' => [
-		'domain' => 'mail.hannabase.com',
-		'secret' => '12345',
+		'domain' => '',
+		'secret' => '',
 	],
 
 	'mandrill' => [

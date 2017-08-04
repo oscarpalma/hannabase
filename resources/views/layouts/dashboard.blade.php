@@ -289,7 +289,7 @@
                                 </ul>
                             </li>
 
-                              <li>
+                            <li>
                                 <a href="#"><i class="fa fa-wrench"></i> Administracion<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     @if(Auth::user()->role == 'administrador')
@@ -300,27 +300,10 @@
                                     
                                     <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
                                         <a href="{{route('mensaje')}}"><i class="fa fa-paper-plane" ></i> Enviar mensaje</a>
-                                    </li> 
+                                    </li>
                                 </ul>
-                            </li>               
+                            </li>                  
                         @endif
-
-                        <!-- Cotizaciones y Autorizaciones  -->
-                            <li>
-                                <a href="#"><i class="glyphicon glyphicon-usd"></i> Cotizaciones y Autorizaciones<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">                                   
-                                    <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
-                                        <a href="{{route('cotizacion')}}"><i class="fa fa-file-text-o" ></i> Cotizaciones</a>
-                                    </li>
-                                    <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
-                                        <a href="{{route('listado_cotizaciones')}}"><i class="fa fa-list-ul" ></i> Listado de Cotizaciones </a>
-                                    </li>
-                                    <li {{ (Request::is('*blank') ? 'class="active"' : '') }}>
-                                        <a href="{{route('listado_autorizaciones')}}"><i class="fa fa-list-ul" ></i> Listado de Autorizaciones </a>
-                                    </li>
-                                </ul>
-                            </li>               
-
  @if(in_array(Auth::user()->role, ['administrador','contabilidad']))
  <li>
                                 <a href="#"><i class="fa fa-calculator"></i> Nomina<span class="fa arrow"></span></a>
