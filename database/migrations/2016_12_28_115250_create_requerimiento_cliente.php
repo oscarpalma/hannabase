@@ -21,11 +21,9 @@ class CreateRequerimientoCliente extends Migration {
 			$table->integer('semana')->unsigned();
 			$table->integer('idcliente')->unsigned();
 			$table->integer('idusuario')->unsigned();
-			$table->integer('idturno')->unsigned();
 			//Se declara referencia de llave foranea
 			$table->foreign('idcliente')->references('idCliente')->on('clientes')->onDelete('cascade');
 			$table->foreign('idusuario')->references('id')->on('users')->onDelete('cascade');
-			$table->foreign('idturno')->references('idTurno')->on('turnos')->onDelete('cascade');
 
 		});
 	}

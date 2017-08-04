@@ -5,14 +5,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
 use DateTime;
-use Mail;
-use Session;
-use Redirect;
 use App\Notificacion;
-use App\AreaCt;
-use App\Proveedor;
-use App\Cotizacion;
-use App\EmpleadoCt;
 
 use Illuminate\Http\Request;
 
@@ -51,7 +44,7 @@ class UserController extends Controller {
 			return redirect()->route('login');
 
 		else if(Auth::user()->role == 'administrador'){
-			$user = User::find($id)->first();
+			$user = User::find($id);
 			return view('admin/modificar_usuario')->with('usuario', $user);
 		}
 
@@ -75,8 +68,6 @@ class UserController extends Controller {
 		return redirect('usuarios');
 	}
 
-
-
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -84,7 +75,7 @@ class UserController extends Controller {
 	 */
 	public function create()
 	{
-		// 
+		//
 	}
 
 	/**
