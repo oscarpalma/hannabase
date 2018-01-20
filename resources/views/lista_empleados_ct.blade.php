@@ -26,7 +26,7 @@
 				        <th>Área</th>
 				        <th>CURP</th>
 				        <th>IMSS</th>
-				        <th>RFC</th>
+				        <th>Fecha de Ingreso</th>
 				        <th><center>Acciones</center></th>
 				    </thead>
 
@@ -38,7 +38,7 @@
 					            <td>{{$empleados['areas'][$empleado->idEmpleadoCt]}}</td>
 					            <td >{{ $empleado->curp}}</td>
 					            <td>@if($empleado->imss != null) {{$empleado->imss}} @else N/A @endif</td>
-					            <td>{{$empleado->rfc}}</td>
+					            <td>{{$empleado->fecha_ingreso}}</td>
 					            <td ><center>
 					            	<a class="btn btn-success btn-sm" title="editar" href="{{ route('modificar_empleadoct',$empleado->idEmpleadoCt) }}"><i class="fa fa-edit"></i></a> 
 					            	<a class="btn btn-danger btn-sm" title="eliminar" href="{{ route('confirmar_eliminarCt',$empleado->idEmpleadoCt) }}"><i class="fa fa-trash"></i></a>

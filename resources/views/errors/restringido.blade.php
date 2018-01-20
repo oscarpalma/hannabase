@@ -50,7 +50,7 @@
 				<center>
 				<div class="icon"><i class="fa fa-exclamation-triangle"></i> <text style="font-size:98px;">Alerta</text></div>
 				<div class="title" style="color:black">No cuenta con los privilegios necesarios para acceder a esta página.</div>
-				<div class="link"><a class="btn btn-primary" href="{{route('home')}}" style="color:white"><text style="color:white; font-weight: bolder; font-size:24px;">Regresar a Inicio</text></a></div>
+				<div class="link"><a class="btn btn-primary" href="/" style="color:white"><text style="color:white; font-weight: bolder; font-size:24px;">Regresar a Inicio</text></a></div>
 				</center>
 			</div>
 		</div>

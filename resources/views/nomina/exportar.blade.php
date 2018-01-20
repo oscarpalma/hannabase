@@ -1,9 +1,9 @@
-@extends('layouts.dashboard')
-@section('page_heading','Exportar Nomina')
-@section('head')
+@extends('base')
+@section('cabezera','Exportar Nomina')
+@section('css')
 <link rel="stylesheet" href="{{ asset("assets/stylesheets/select2.css") }}" />
 @stop
-@section('section')
+@section('content')
 
 @if(Session::has('message'))
 	<script type="text/javascript">
@@ -13,7 +13,7 @@
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('exportar_nomina') }}" id="buscar_checada">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><strong>Buscar</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 			<div class="row-sm">					

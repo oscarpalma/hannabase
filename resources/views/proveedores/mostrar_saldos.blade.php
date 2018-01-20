@@ -1,16 +1,8 @@
-@extends('layouts.dashboard')
-@section('page_heading','Saldos')
-@section('section')
-@section('head')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-@stop
-@section('section')
+@extends('base')
+@section('cabezera','Transacciones')
+@section('content')
 
-@if(Session::has('message'))
-	<script type="text/javascript">
-		window.onload = function(){ alert("{{Session::get('message')}}");}
-	</script>
-@endif
+
 
 <form class="form-horizontal" role="form" method="POST" action=" {{ route('convertirsaldo', $transaccion->id) }} ">
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -38,4 +30,4 @@
 		
 	</div>
 
-@stop
+@endsection

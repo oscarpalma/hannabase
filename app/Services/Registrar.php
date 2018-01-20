@@ -2,8 +2,6 @@
 
 use App\User;
 use Validator;
-use App\Notificacion;
-use DateTime;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
 class Registrar implements RegistrarContract {
@@ -18,9 +16,16 @@ class Registrar implements RegistrarContract {
 	{
 		return Validator::make($data, [
 			'name' => 'required|max:255',
+			//'last_name' => 'required|max:255',
 			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
-		]);
+		],[
+            'name.required' => 'El nombre es requerido',
+            'email.required' => 'El correo es requerido',
+            'password.required' => 'La contraseña es requerida',
+            'email.unique' => 'El correo ya esta en uso',
+            'password.min' => 'La contraseña debe tener minimo 6 caracteres'
+        ]);
 	}
 
 	/**
@@ -31,24 +36,12 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-		$usuarios_area = User::where('role','administrador')->get();
-			foreach ($usuarios_area as $usuario) {
-			
-			 
-		$mensaje = "Un nuevo usuario ha sido registrado en el sistema; revise la informacion para asignar los privilegios apropiados. El correo utilizado para el registro fue: " . $data['email'];
-	    $notificacion = new Notificacion();
-	    $notificacion->destinatario = $usuario->id;
-	    $notificacion->mensaje = $mensaje;
-		$notificacion->fecha = (new DateTime('now'))->format('Y-m-d H:i:s');
-		$notificacion->remitente = 'Sistema';
-		$notificacion->asunto = 'Nuevo usuario';
-		$notificacion->save();
-		} 
 		return User::create([
-			'nombre' => $data['name'],
+			'name' => $data['name'],
+			//'last_name' => $data['last_name'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
-			'role' => null,
+			'role' => 'noAsignado',
 		]);
 	}
 

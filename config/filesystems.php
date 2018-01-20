@@ -45,12 +45,20 @@ return [
 
 		'local' => [
 			'driver' => 'local',
-			'root'   => public_path() . '/fotos',
+			'root'   => public_path().'/storage/fotos/',
 		],
-		'archivos' => [
-            'driver' => 'local',
-            'root'   => storage_path('archivos'),
-        ],
+		'fotosEmpleados' => [
+			'driver' => 'local',
+			'root'   => public_path().'/storage/fotos/empleados',
+		],
+		'fotosCrtm' => [
+			'driver' => 'local',
+			'root'   => public_path().'/storage/fotos/crtm',
+		],
+		'fotosInventario' => [
+			'driver' => 'local',
+			'root'   => public_path().'/storage/fotos/inventario',
+		],
 
 		's3' => [
 			'driver' => 's3',

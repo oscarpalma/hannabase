@@ -2,8 +2,7 @@
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 		<link href="/css/app.css" rel="stylesheet">
-		<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}"/>
-
+		 <link href="/static/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 		<style>
 			body {
 				margin: 0;

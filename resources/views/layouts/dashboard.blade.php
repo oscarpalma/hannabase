@@ -353,6 +353,11 @@
                                     
                                 </ul>
                             </li>  
+
+                            <!-- Proyecto -->
+                            <li {{ (Request::is('*blank') ? 'class="active"' : '') }} >
+                                <a href="{{route('listado_espera')}}"><i class="glyphicon glyphicon-list"></i> Lista de Espera <span class="fa fa-address-book"></span></a>
+                            </li>
  @endif 
                     </ul>
                     <!-- /. navbar-collapse -->

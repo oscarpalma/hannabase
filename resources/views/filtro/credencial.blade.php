@@ -1,6 +1,6 @@
-@extends('layouts.dashboard')
-@section('page_heading','Nueva Credencial')
-@section('section')
+@extends('base')
+@section('cabezera','Nueva Credencial')
+@section('content')
 
 <div class ="navbar navbar-default">
 	<form class="navbar-form navbar-left" method="post" >

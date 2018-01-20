@@ -12,8 +12,6 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'App\Console\Commands\Inspire',
-		'App\Console\Commands\bajaEmpleado',
-		'App\Console\Commands\avisoPago',
 	];
 
 	/**
@@ -26,10 +24,6 @@ class Kernel extends ConsoleKernel {
 	{
 		$schedule->command('inspire')
 				 ->hourly();
-		/*$schedule->command('bajaEmpleado')
-				 ->thursday()->at('09:48')->evenInMaintenanceMode();*/
-		$schedule->command('avisoPago')
-				 ->dailyAt('08:47')->evenInMaintenanceMode();
 	}
 
 }

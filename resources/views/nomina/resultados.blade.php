@@ -33,28 +33,28 @@ print $turno->idTurno.'|'.$turno->idCliente.'|'.$turno->hora_entrada.'|'.$turno-
 print '~';
 
 foreach($comedores as $comedor){
-print $comedor->id.'|'.$comedor->idEmpleado.'|'.$comedor->fecha.'|'.$comedor->cantidad . "$";
+print $comedor->idComedores.'|'.$comedor->idEmpleado.'|'.$comedor->fecha.'|'.$comedor->cantidad . "$";
 
 }
 
 print '~';
 
 foreach($descuentos as $descuento){
-print $descuento->id_descuentos.'|'.$descuento->empleado.'|'.$descuento->descuento.'|'.$descuento->fecha.'|'.$descuento->comentario.'|'.$descuento->created_at.'|'.$descuento->updated_at . "$";
+print $descuento->idDescuento.'|'.$descuento->idEmpleado.'|'.$descuento->descuento.'|'.$descuento->fecha.'|'.$descuento->comentario.'|'.$descuento->created_at.'|'.$descuento->updated_at . "$";
 
 }
 
 print '~';
 
 foreach($reembolsos as $reembolso){
-print $descuento->id_descuentos.'|'.$descuento->empleado.'|'.$descuento->descuento.'|'.$descuento->fecha.'|'.$descuento->comentario.'|'.$descuento->created_at.'|'.$descuento->updated_at . "$";
+print $descuento->idReembolso.'|'.$descuento->idEmpleado.'|'.$descuento->descuento.'|'.$descuento->fecha.'|'.$descuento->comentario.'|'.$descuento->created_at.'|'.$descuento->updated_at . "$";
 
 }
 
 print '~';
 
 foreach($tipo_descuentos as $tipo_descuento){
-print $tipo_descuento->id_descuento.'|'.$tipo_descuento->nombre_descuento.'|'.$tipo_descuento->precio . "$";
+print $tipo_descuento->idTipoDescuento.'|'.$tipo_descuento->nombre_descuento.'|'.$tipo_descuento->precio . "$";
 
 }
 

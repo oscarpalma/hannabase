@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
-@section('page_heading','Administrar Material')
-@section('head')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="{{ asset('assets/scripts/barcode/JsBarcode.all.js') }}"></script>
+@extends('base')
+@section('cabezera','Administrar Material')
+@section('css')
+<link href="/static/select2/select2.css" rel="stylesheet">
+<script src="{{ asset('static/js/barcode/JsBarcode.all.js') }}"></script>
 <script>
 		Number.prototype.zeroPadding = function(){
 			var ret = "" + this.valueOf();
@@ -30,17 +30,17 @@
   
   </style>
 @stop
-@section('section')
+@section('content')
 
 
 <div id="load">Espere un momento ...</div>
-<div class="container-fluid">
-<div class="row">
+
+
 	
 			<div class="row">
 					<div class="col-lg-4">
 					    <div class="input-group">
-					      <input type="text" class="form-control" id="codigoBuscar">
+					      <input type="text" class="form-control" placeholder="Código de producto" id="codigoBuscar">
 					      <span class="input-group-btn">
 
 					        <button class="btn btn-default" type="button" id="buscar"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></button>
@@ -51,25 +51,17 @@
 
 					
 	<br>
-</div>
-	<div class="row">
-	<div class="alert alert-info alert-dismissible" role="alert" id="mensajeInicial">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong><span class="glyphicon glyphicon glyphicon-info-sign" aria-hidden="true"></span></strong> Ingrese el codigo del producto 
-				
-			</div>
+
+	
+	
 		<div class="alert alert-danger alert-dismissible" role="alert" id="error" hidden="">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong> El codigo ingresado no coincide con ningun material registrado! 
 				
 			</div>
-			<div class="alert alert-success alert-dismissible" role="alert" id="success" hidden="">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong><span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span></strong> Material actualizado exitosamente 
-				
-			</div>
+			
 		<div class="panel panel-primary" hidden="" id="material">
-			<div class="panel-heading"><strong>Material</strong></div>
+			<div class="panel-heading"></div>
 			<div class="panel-body">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -194,7 +186,7 @@
 					  	<select class="form-control" id="area" name="area" required>
 					  		<option value="">Seleccione</option>
 					  		@foreach($areas as $area) 
-			        			<option value="{{ $area->idAreaCt }}">{{ $area->nombre }}</option>
+			        			<option value="{{ $area->idArea }}">{{ $area->nombre }}</option>
 			        		@endforeach
 					  	</select>
 					  </div>
@@ -253,18 +245,19 @@
 			
 			</div>
 		</div>
-	</div>
-</div>
+	
 
 
 
-@section('scripts')
+
+@stop
+@section('js')
 
 
 <script type="text/javascript">
 	
 	function mostrarSistemas(){
-		if ($("#area").val()=='24'){
+		if ($("#area").val()=='7'){
 		  	$("#sistemas").show();
 		  	
 		  	
@@ -344,7 +337,7 @@ $( "#codigoBuscar" ).keypress(function( event ) {
 		            success: function(data){
 
 		              $( "#load" ).hide();
-		              $("#mensajeInicial").hide();
+		              
 		              $("#success").hide();
 		              if(data){
 		              	$("#error").hide();
@@ -361,7 +354,7 @@ $( "#codigoBuscar" ).keypress(function( event ) {
 		                $('#estado> option[value="'+data.estado+'"]').attr('selected', 'selected');
 		                $('#area> option[value="'+data.area+'"]').attr('selected', 'selected');
 		                
-		                $("#fotografia").attr("src","/"+data.foto);
+		                $("#fotografia").attr("src",data.foto);
 		                if(mostrarSistemas()){
 		                	if(data.otros){
 		                		$('#tipo> option[value="otros"]').attr('selected', 'selected');
@@ -464,4 +457,3 @@ $( "#codigoBuscar" ).keypress(function( event ) {
 </script>
 
     @stop
-@stop

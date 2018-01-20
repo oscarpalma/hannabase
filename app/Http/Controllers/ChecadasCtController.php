@@ -24,12 +24,13 @@ class ChecadasCtController extends Controller {
 	{
 		$this->middleware('auth');
 	}
+
 	public function index()
 	{
 		if(Auth::guest())
 			return redirect()->route('login');
 
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad','recepcion'])){		
+		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){		
 			//obtener los empleados internos y enviarlos a la vista
 			$empleados = EmpleadoCt::all();
 			return view('empleados_ct/agregar_checada_ct')->with('empleados', $empleados);
@@ -58,7 +59,9 @@ class ChecadasCtController extends Controller {
 	 */
 	public function create(Request $request)
 	{
+
 		//encontrar al empleado seleccionado
+		
 		$empleado = EmpleadoCt::where('idEmpleadoCt', $request->input('empleado'))->first();
 		$user = Auth::user(); //debe reemplazarse por el usuario actual
 		

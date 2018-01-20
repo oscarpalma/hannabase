@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte Por inventario</title>
+<link rel="stylesheet" type="text/css" href="static/cssPdf/pdf.css">
+<link href="/static/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+<style type="text/css">
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    
+    
+    padding: 10px;
+}
+.left {
+    position: absolute;
+    left: 0px;
+    width: 300px;
+    
+    
+    padding: 10px;
+}
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+.mibloque{
+      -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+    
+    -webkit-column-gap: 20px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 20px; /* Firefox */
+    column-gap: 20px;
+    
+    -webkit-column-gap: 2rem; /* Chrome, Safari, Opera */
+    -moz-column-gap: 2rem; /* Firefox */
+    column-gap: 2rem;
+}
+p {
+    font-size: 15px;
+    font-size: 1.5rem;    
+    line-height: 1.333333334;
+    margin-bottom: 20px;
+    margin-bottom: 2rem;
+    text-align: justify;
+}
+ 
+.contenedor-tabla{
+
+display: table;
+width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+}
+
+.contenedor-fila{
+
+display: table-row;
+
+}
+
+.contenedor-columna{
+
+display: table-cell;
+
+}
+</style>
+</head>
+<body>
+
+<div class="col-md-12">
+<img src="static/imagenes/crtmlogo.png" width="90px">
+<p class="fecha"><strong><?=  $date; ?></strong></p>
+<center><h1>Reporte de inventario</h1></center>
+
+              <div class="box">
+        
+                
+                <div class="box-body">
+                <div class="contenedor-tabla">
+    <div class="contenedor-fila">
+        <div class="contenedor-columna">
+Columna 1
+         </div>
+
+        <div class="contenedor-columna">
+             Columna 2
+        </div>
+
+        <div class="contenedor-columna">
+Columna 3
+        </div>
+    </div>
+</div>
+                <label>Altas</label>
+                <label>Bajas</label>
+                <label>Total</label>
+                </div><!-- /.box-body -->
+                
+                <div class="box-footer clearfix">
+                  
+                </div>
+              </div><!-- /.box -->
+              <table class="table table-striped table-bordered table-hover">
+                  <thead>
+                     <tr>
+                      <th >Codigo</th>
+                      <th>Nombre</th>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th >Unidades</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                  <?php foreach($data as $inventario){ ?>
+                 
+                    <tr>
+                      <td><?= $inventario->codigoBarras; ?></td>
+                      <td><?= $inventario->nombre; ?></td>
+                      <td><?= $inventario->marca; ?></td>
+                      <td><?= $inventario->modelo; ?></td>
+
+                      <td><span class="badge bg-red"><?= $inventario->unidades; ?></span></td>
+                    </tr>
+                    
+                    <?php  } ?>
+                    
+                  </tbody>
+
+                  </table>
+              
+            </div>
+
+
+  
+</body>
+</html>
+
+

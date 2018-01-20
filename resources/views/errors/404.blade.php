@@ -2,8 +2,7 @@
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 		<link href="/css/app.css" rel="stylesheet">
-		<link rel="stylesheet" href="{{ asset("assets/stylesheets/styles.css") }}"/>
-
+		 <link href="/static/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 		<style>
 			body {
 				margin: 0;
@@ -50,7 +49,7 @@
 				<center>
 				<div class="icon"><i class="fa fa-exclamation-triangle"></i> <text style="font-size:98px;">Error 404</text></div>
 				<div class="title" style="color:black">La pagina solicitada no existe.</div>
-				<div class="link"><a class="btn btn-primary" href="{{route('home')}}" style="color:white"><text style="color:white; font-weight: bolder; font-size:24px;">Regresar a Inicio</text></a></div>
+				<div class="link"><a class="btn btn-primary" href="/" style="color:white"><text style="color:white; font-weight: bolder; font-size:24px;">Regresar a Inicio</text></a></div>
 				</center>
 			</div>
 		</div>

@@ -1,6 +1,10 @@
-@extends('layouts.dashboard')
-@section('page_heading','Verificar')
-@section('section')
+@extends('base')
+@section('cabezera','Verificar')
+@section('css')
+<!-- Modal CSS -->
+    <link href="/static/css-modal/modal.css" rel="stylesheet">   
+@endsection
+@section('content')
 <div class ="navbar navbar-default">
 	<form class="navbar-form navbar-left" method="post" >
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">	
@@ -25,12 +29,12 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header modal-header-info">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Ayuda</h4>
       </div>
       <div class="modal-body">
-        <p>En el campo mostrado, ingresar la curp de los prospectos a verificar, separados por comas. Puede utilizar los espacios y saltos de líneas (presionar Enter) que deseé, pero siempre tiene que haber una coma entre cada una de las CURP ingresadas. Puede mezclar MAYÚSCULAS con minúsculas </p>
+        <p>En el campo mostrado, ingresar la curp de los prospectos a verificar, separados por comas. Puede utilizar los espacios y saltos de líneas (presionar Enter) que deseé, pero siempre tiene que haber una coma entre cada una de las CURP ingresadas. Puede mezclar MAYÚSCULAS con minúsculas. </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

@@ -1,9 +1,9 @@
-@extends('layouts.dashboard')
-@section('page_heading','Indicadores')
-@section('head')
-<link rel="stylesheet" href="{{ asset("assets/stylesheets/select2.css") }}" />
+@extends('base')
+@section('cabezera','Indicadores')
+@section('css')
+
 @stop
-@section('section')
+@section('content')
 
 @if(Session::has('message'))
 	<script type="text/javascript">
@@ -13,7 +13,7 @@
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('indicadores') }}" id="buscar_checada">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><strong>Buscar</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 			<div class="row-sm">					
@@ -67,7 +67,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-male fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['hombres'])}}</div>
                         <div>Hombres trabajaron</div>
                     </div>
@@ -88,7 +91,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-female fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['mujeres'])}}</div>
                         <div>Mujeres trabajaron</div>
                     </div>
@@ -109,7 +115,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-users fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['dosDias'])}}</div>
                         <div>Personas trabajaron 1 o 2 dias</div>
                     </div>
@@ -130,7 +139,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-users fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['tresDias'])}}</div>
                         <div>Personas trabajaron 3 dias</div>
                     </div>
@@ -151,7 +163,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-users fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['cuatroDias'])}}</div>
                         <div>Personas trabajaron 4 dias o mas</div>
                     </div>
@@ -172,7 +187,10 @@
 		<div class="panel panel-primary" style=" border-color: #337ab7;">
             <div class="panel-heading" style="background:#337ab7; border-color: #337ab7;">
                 <div class="row">
-                    <div class="col-xs-12 text-center">
+                <div class="col-xs-3">
+                	<i class="fa fa-users fa-4x"></i>
+                </div>
+                    <div class="col-xs-9 text-right">
                         <div class="huge">{{count($resultados['hombres']) + count($resultados['mujeres'])}}</div>
                         <div>Personas trabajaron</div>
                     </div>
@@ -194,13 +212,13 @@
 	<div id="tabla1" hidden>
 		<h3>Hombres</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['hombres'] as $empleado) 
@@ -220,13 +238,13 @@
 	<div id="tabla2" hidden>
 		<h3>Mujeres</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['mujeres'] as $empleado) 
@@ -246,13 +264,13 @@
 	<div id="tabla3" hidden>
 		<h3>Dos dias o menos</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['dosDias'] as $empleado) 
@@ -272,13 +290,13 @@
 	<div id="tabla4" hidden>
 		<h3>Tres dias</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['tresDias'] as $empleado) 
@@ -298,13 +316,13 @@
 	<div id="tabla5" hidden>
 		<h3>Cuatro dias o mas</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['cuatroDias'] as $empleado) 
@@ -324,13 +342,13 @@
 	<div id="tabla6" hidden>
 		<h3>Total</h3>
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
-		    <thead>
+		    <tcss>
 		        <th>ID</th>
 		        <th>Nombre</th>
 		        <th>CURP</th>
 		        <th>IMSS</th>
 		        <th>RFC</th>
-		    </thead>
+		    </tcss>
 
 		    <tbody>
 			    @foreach($resultados['mujeres'] as $empleado) 
@@ -356,6 +374,13 @@
 	</div>
 </div>
 
+
+
+@endif
+
+@stop
+
+@section('js')
 <script type="text/javascript">
 	$('#hombres').click(function(){
 		$('#tabla1').show();
@@ -398,6 +423,7 @@
 		$('#tabla6').hide();	
 	})
 	$('#todos').click(function(){		
+		
 		$('#tabla1').hide();
 		$('#tabla2').hide();
 		$('#tabla3').hide();
@@ -406,7 +432,4 @@
 		$('#tabla6').show();
 	})
 </script>
-
-@endif
-
-@stop
+@endsection

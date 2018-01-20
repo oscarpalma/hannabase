@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
-use App\Services\Registrar;
+use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller {
@@ -20,15 +20,6 @@ class AuthController extends Controller {
 
 	use AuthenticatesAndRegistersUsers;
 
-	public function redirectPath()
-	{
-		if (property_exists($this, 'redirectPath'))
-		{
-			return $this->redirectPath;
-		}
-
-		return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
-	}
 	/**
 	 * Create a new authentication controller instance.
 	 *

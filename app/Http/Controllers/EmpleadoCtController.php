@@ -111,7 +111,8 @@ class EmpleadoCtController extends Controller {
 				'genero' => $request->input('genero'),
 				'idestado' => $estado->id_estados,
 				'fecha_nacimiento' => $request->input('fecha_nacimiento'),
-				'area' => $area->idAreaCt
+				'area' => $area->idAreaCt,
+				'fecha_ingreso' =>$request->input('fecha_ingreso')
 				]);
 			
 			if($request->input('ap_materno') == "XX"){

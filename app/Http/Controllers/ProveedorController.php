@@ -2,8 +2,8 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Proveedor;
-use App\Transaccion;
+use App\Modelos\Proveedor;
+use App\Modelos\Transaccion;
 use Auth;
 use DateTime;
 use DateInterval;
@@ -11,39 +11,18 @@ use Illuminate\Http\Request;
 
 class ProveedorController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+	
+	
 	public function index()
 	{
-		//
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
 		return view('proveedores/agregar');
-
-		}
-		else
-			return view('errors/restringido');
+ 
+		
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
+	
 	public function create(Request $request)
 	{
-		//
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
 		$proveedor = new Proveedor([
 			'nombre' => $request->input('nombre'),
 			'contacto' => $request->input('contacto'),
@@ -56,32 +35,18 @@ class ProveedorController extends Controller {
 
 		return redirect()->route('nuevo_proveedor')->withInput()->with('mensaje','Registro exitoso');
 
-		}
-		else
-			return view('errors/restringido');	
+		
 	}
-
-
 
 	public function transaccion()
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
+		
 		return view('proveedores/nueva_transaccion')->with('proveedores',Proveedor::all());
-		}
-		else
-			return view('errors/restringido');	
+			
 	}
 
 	public function guardarTransaccion(Request $request)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 		$proveedor = Proveedor::find($request->input('proveedor'));
 		$transaccion = new Transaccion([
 			'factura' => $request->input('factura'),
@@ -105,47 +70,26 @@ class ProveedorController extends Controller {
 
 		return redirect()->route('proveedores_transaccion')->withInput()->with('mensaje','Registro exitoso');
 
-		}
-		else
-			return view('errors/restringido');	
+		
 	}
-
 
 	public function listaProveedores()
 
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
 		return view('proveedores/lista_proveedores')->with('proveedores',Proveedor::all());
 
-		}
-		else
-			return view('errors/restringido');
+		
 	}
 
 	public function editar($id)
 
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
 		return view('proveedores/editar')->with('proveedor',Proveedor::find($id));
-		}
-		else
-			return view('errors/restringido');
+		
 	}
 
 	public function actualizarProveedor($id, Request $request)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 		$proveedor = Proveedor::find($id);
 		$proveedor->nombre = $request->input('nombre');
 		$proveedor->contacto = $request->input('contacto');
@@ -156,10 +100,7 @@ class ProveedorController extends Controller {
 		$proveedor->save();
 		return redirect()->route('lista_proveedores');
 
-		}
-
-		else
-			return view('errors/restringido');
+		
 	}
 
 	public function eliminar($id)
@@ -169,30 +110,17 @@ class ProveedorController extends Controller {
 
 	public function buscar()
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 		return view('proveedores/lista_transacciones')->with('proveedores',Proveedor::all());
 
-		}
-
-		else
-			return view('errors/restringido');
 	}
-
 
 	public function mostrar(Request $request)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 		if($request->input('proveedor') != 'todos'){
 			$proveedor = Proveedor::find($request->input('proveedor'));
 			$transacciones = Transaccion::where('proveedor',$proveedor->id)->get();
-		}
-		else{
+		
+		}else{
 			$transacciones = Transaccion::all();
 		}
 
@@ -204,77 +132,47 @@ class ProveedorController extends Controller {
 
 		return view('proveedores/lista_transacciones')->with('transacciones',$transacciones)->with('lista_proveedores',$proveedores)->with('proveedores',Proveedor::all());
 
-		}
-
-		else
-			return view('errors/restringido');
+		
 	}
 
 
 	//confirmar que se quiere eliminar
 	public function borrarTransaccion($id)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 			$transaccion = Transaccion::find($id);
 			$proveedor = Proveedor::find($transaccion->proveedor);
 		return view('proveedores/eliminar_transaccion')->with('transaccion',$transaccion)->with('proveedor',$proveedor);
 
-		}
-
-		else
-			return view('errors/restringido');
+		
 	}
 
 	//eliminar la transaccion
 	public function eliminarTransaccion($id)
 	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){		
 		$transaccion = Transaccion::find($id);
 		$transaccion->delete();
 
 		return redirect()->route('transacciones');
 
-		}
-
-		else
-			return view('errors/restringido');
+		
 	}
-
 
 	public function buscarReporte()
 	{
 		
 
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){		
 			$proveedores = Proveedor::all();
 			
 
 			$parametros = ['proveedores' => $proveedores]; //parametros para filtrar la busqueda
 			return view('proveedores/reporte')->with('parametros', $parametros);
-		}
-
-		else
-			return view('errors/restringido');
+		
 	}
 
 	public function generarReporte(Request $request)
 	{
-	if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){		
 			$proveedor = $request->input('proveedor');
 			$forma = $request->input('por');
-
 
 			//queryFechas se encarga de delimitar el periodo de tiempo
 			if($forma == 'semana')
@@ -321,8 +219,6 @@ class ProveedorController extends Controller {
 			else
 				$queryProveedor = " AND proveedor = '" . $request->input('proveedor') . "'";
 
-			
-
 			$transacciones = Transaccion::whereRaw($queryFechas.$queryProveedor)->	orderBy('semana')->get();
 
 
@@ -348,10 +244,7 @@ class ProveedorController extends Controller {
 			$proveedor = Proveedor::where('id', $proveedor)->first();
 			$parametros = ['proveedores' => $proveedores, 'transacciones'=>$transacciones,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo, 'proveedor'=>$proveedor, 'codigo'=>$codigo]; //parametros para filtrar la busqueda
 			return view('proveedores/reporte')->with('parametros', $parametros);
-		}
-
-		else
-			return view('errors/restringido');
+		
 
 		
 	}
@@ -359,19 +252,78 @@ class ProveedorController extends Controller {
 	public function detalleReporte(Request $request)
 	{
 		
+			// return view('proveedores/detalle_reporte');		
+			$proveedor = $request->input('proveedor');
+			$forma = $request->input('por');
+
+			//queryFechas se encarga de delimitar el periodo de tiempo
+			if($forma == 'semana')
+				$queryFechas = "semana = '" . $request->input('valor') . "'";
+
+			elseif($forma == 'mes'){
+				$fechaActual = new DateTime('now');
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				//el primer dia del mes dado
+				$fecha1->setDate($fechaActual->format('Y'),$request->input('valor'),1); 
+				
+				//el primer dia del siguiente mes
+				if($request->input('valor') == 12)
+					//si es diciembre, tomar enero como el siguiente dia
+					$fecha2 = setDate(($fechaActual->format('Y')+1), 1, 1);
+				
+				else
+					$fecha2->setDate($fechaActual->format('Y'),($request->input('valor')+1),1); 
+
+				//restar un dia a la segunda fecha para que sea el ultimo dia del mes
+				$fecha2->sub(new DateInterval('P1D'));
+
+
+			$queryFechas = "fecha_captura BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			else {//año
+				$fecha1 = new DateTime();
+				$fecha2 = new DateTime();
+				$year = $request->input('valor');
+
+				$fecha1->setDate($year,1,1); //primer dia del año
+				$fecha2->setDate($year,12,31); //ultimo dia del año
+				
+				$queryFechas = "fecha_captura BETWEEN CAST('" . $fecha1->format('Y-m-d') . "' AS DATE) AND CAST('" . $fecha2->format('Y-m-d') . "' AS DATE)";
+			}
+
+			//si no especifica proveedor, ignorar del query
+			if($proveedor == 'todos'){
+				$queryProveedor = "";
+			}
+
+			else
+				$queryProveedor = " AND proveedor = '" . $request->input('proveedor') . "'";
+
+			$transacciones = Transaccion::whereRaw($queryFechas.$queryProveedor)->	orderBy('semana')->get();
+
+
+			$total_cargo=0;
+			$total_abono=0;
+			$total_saldo=0;
+			
+			foreach ($transacciones as $transaccion) {
+				$total_cargo += $transaccion->cargo;
+				$total_abono += $transaccion->abono;
+				$total_saldo += $transaccion->saldo;
+			}
+			$proveedores = Proveedor::all();
+			$parametros = ['proveedores' => $proveedores, 'transacciones'=>$transacciones,'total_abono'=>$total_abono, 'total_cargo'=>$total_cargo, 'total_saldo'=>$total_saldo]; //parametros para filtrar la busqueda
+			return view('proveedores/detalle_reporte')->with('parametros',$parametros);	
+		
 
 		
 	}
 
-	
-
 public function editarT($id){
 
-if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
+		
 				$transaccion = Transaccion::find($id);
 				
 				
@@ -382,61 +334,14 @@ if(Auth::guest())
 				
 
 				return view('proveedores/editar_transaccion')->with('transaccion',$transaccion)->with('proveedores',$proveedores);
-				
-
-			}
-
-		else
-			return view('errors/restringido');
-
+			
 	}
 
-####################### Metodos para Cambiar Saldo a Abono ##############################################
 
-	public function MostrarSaldo($id)
-	{
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(Auth::user()->role == 'administrador'){
-
-			$transaccion = Transaccion::find($id);
-			return view('proveedores/mostrar_saldos')->with('transaccion',$transaccion);
-		}
-		else
-			return view('errors/restringido');
-	}
-
-	public function ConvertirSaldo(Request $request, $id)
-	{
-
-		
-		if(Auth::guest())
-				return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
-			$transaccion = Transaccion::find($id);
-			$transaccion->abono = $request->input('saldo');
-			$transaccion->saldo = 0;
-
-			$transaccion->save();
-			return redirect()->route('transacciones')->withInput()->with('mensaje','Abono Guardado');
-		}
-		
-		else
-			return view('errors/restringido');
-	}
-
-########################################################################################################
 
 	public function guardarCambios(Request $request, $id){
 
-if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
-
+		
 			$transaccion = Transaccion::find($id);
 			$transaccion->factura = $request->input('factura');
 			$transaccion->proveedor=$request->input('proveedor');
@@ -458,16 +363,12 @@ if(Auth::guest())
 
 			return redirect()->route('transacciones');
 
-			}
-
-		else
-			return view('errors/restringido');
-
 	}
 
-public function subirArchivo(){
-	return view('proveedores/subirTransaccion');
-}
+	public function subirArchivo(){
+		return view('proveedores/subirTransaccion');
+	}
+
 	public function subirTransacciones(Request $request){
 		//Se obtiene el archivo para guardar
 		$archivo = $request->file('archivo');
@@ -538,71 +439,34 @@ public function subirArchivo(){
 	}
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function destroy($id)
 	{
-		//
-		if(Auth::guest())
-			return redirect()->route('login');
-
-		else if(in_array(Auth::user()->role, ['administrador','contabilidad'])){
 		$proveedor = Proveedor::find($id);
 		$proveedor->delete();
 
 		return redirect()->route('lista_proveedores');
 
-		}
+		
+	}
 
-		else
-			return view('errors/restringido');
+####################### Metodos para Cambiar Saldo a Abono ##############################################
+
+	public function MostrarSaldo($id)
+	{
+		$transaccion = Transaccion::find($id);
+		return view('proveedores/mostrar_saldos')->with('transaccion',$transaccion);
+	}
+
+	public function ConvertirSaldo(Request $request, $id)
+	{
+		$transaccion = Transaccion::find($id);
+		$transaccion->abono = $request->input('saldo');
+		$transaccion->saldo = 0;
+
+		$transaccion->save();
+		return redirect()->route('transacciones')->withInput()->with('success','Abono Guardado');
+	
 	}
 
 }

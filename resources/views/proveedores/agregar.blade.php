@@ -1,11 +1,14 @@
-@extends('layouts.dashboard')
-@section('page_heading','Agregar Proveedor')
-@section('section')
+@extends('base')
+@section('cabezera','Agregar Proveedor')
+@section('content')
 
 @if(Session::has('mensaje'))
-    <script type="text/javascript">
-        window.onload = function(){ alert("{{Session::get('mensaje')}}");}
-    </script>
+    
+    <div class="alert alert-success alert-dismissible" role="alert" id="success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></strong> {{Session::get('mensaje')}}
+				
+	</div>
 @endif
 <!--
 <script>
@@ -18,7 +21,7 @@
 <form class="form-horizontal" role="form" method="POST" action="{{route('nuevo_proveedor')}}" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="panel panel-primary">
-		<div class="panel-heading"><strong>Datos</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<div class="row-sm">					
 				<p>Campos marcados con <text style="color:red">*</text> son obligatorios.</p>
@@ -61,4 +64,14 @@
 		</div>
 	</div>
 </form>
-@stop
+@endsection
+
+@section('js')
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		
+		$("#success").delay(2000).hide(600);
+});
+</script>
+@endsection

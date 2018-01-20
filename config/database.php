@@ -51,11 +51,11 @@ return [
 			'database' => storage_path().'/database.sqlite',
 			'prefix'   => '',
 		],
-#Nombre anterior de la base de datos "users" aun existe
+
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => env('DB_HOST', 'localhost'),
-			'database'  => env('DB_DATABASE', 'centrotrabajo'),
+			'database'  => env('DB_DATABASE', 'crtm'),
 			'username'  => env('DB_USERNAME', 'root'),
 			'password'  => env('DB_PASSWORD', '123'),
 			'charset'   => 'utf8',

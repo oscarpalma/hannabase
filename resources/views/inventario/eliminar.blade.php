@@ -1,6 +1,6 @@
-@extends('layouts.dashboard')
-@section('page_heading','Lista de Inventario')
-@section('section')
+@extends('base')
+@section('cabezera','Lista de Inventario')
+@section('content')
 
 @if(Session::has('mensaje'))
     <script type="text/javascript">
@@ -18,7 +18,7 @@
 <form class="form-horizontal" role="form" method="POST" action="{{route('eliminar_inventario',$inventario->id)}}" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="panel panel-primary">
-		<div class="panel-heading"><strong>Datos</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-4">

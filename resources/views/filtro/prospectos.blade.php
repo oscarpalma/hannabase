@@ -1,6 +1,6 @@
-@extends('layouts.dashboard')
-@section('page_heading','Verificar')
-@section('section')
+@extends('base')
+@section('cabezera','Verificar')
+@section('content')
 <div class ="navbar navbar-default">
 <form class="navbar-form navbar-left">
 	<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase'>

@@ -13,8 +13,8 @@ return [
 	|
 	*/
 
-	'debug' => true,
-
+'debug' => env('APP_DEBUG'),
+'debug' => true,
 	/*
 	|--------------------------------------------------------------------------
 	| Application URL
@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://ct.hannabase.com',
+	'url' => 'http://localhost',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -113,6 +113,7 @@ return [
 		/*
 		 * Laravel Framework Service Providers...
 		 */
+		Barryvdh\DomPDF\ServiceProvider::class,
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Bus\BusServiceProvider',
@@ -135,7 +136,6 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-		'Illuminate\Html\HtmlServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -145,13 +145,6 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-		'Barryvdh\DomPDF\ServiceProvider',
-	
-		/*
-		 *libreria de Excel
-		*/
-		#'Maatwebsite\Excel\ExcelServiceProvider::class',
-		'Maatwebsite\Excel\ExcelServiceProvider',
 
 	],
 
@@ -167,7 +160,7 @@ return [
 	*/
 
 	'aliases' => [
-
+		'PDF' => 'Barryvdh\DomPDF\Facade',
 		'App'       => 'Illuminate\Support\Facades\App',
 		'Artisan'   => 'Illuminate\Support\Facades\Artisan',
 		'Auth'      => 'Illuminate\Support\Facades\Auth',
@@ -200,10 +193,6 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-		'Form'      => 'Illuminate\Html\FormFacade',
-     		'Html'      => 'Illuminate\Html\HtmlFacade',
-		'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
-		'PDF' => 'Barryvdh\DomPDF\Facade',
 
 	],
 

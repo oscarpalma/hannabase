@@ -1,19 +1,19 @@
-@extends('layouts.dashboard')
-@section('page_heading','Agregar Transaccion')
-@section('section')
+@extends('base')
+@section('cabezera','Agregar Transaccion')
+@section('css')
+<link href="/static/select2/select2.css" rel="stylesheet">
+@endsection
+@section('content')
 
 @if(Session::has('mensaje'))
-    <script type="text/javascript">
-        window.onload = function(){ alert("{{Session::get('mensaje')}}");}
-    </script>
+<div class="alert alert-success alert-dismissible" role="alert" id="success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></strong> {{Session::get('mensaje')}}
+				
+	</div>
+    
 @endif
-<!--
-<script>
-  $(document).ready(function(){
-    $(".time_element").timepicki();
-  });
-</script>
--->
+
 
 <form class="form-horizontal" role="form" method="POST" action="{{route('proveedores_transaccion')}}" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -50,7 +50,7 @@
 				<label class="control-label">Categoria<text style="color:red">*</text></label>
 					<div>
 						<select class="form-control" name="categoria" id="categoria"  required="">
-							<option value="">SELECCIONAR</option>
+							<option value="">Seleccionar</option>
 							<option value="Recursos Humanos">Recursos Humanos</option>
 							<option value="Logistica">Logistica</option>
 							<option value="Servicios Generales">Servicios Generales</option>
@@ -58,17 +58,17 @@
 							<option value="Reclutamiento">Reclutamiento</option>
 							<option value="Contabilidad">Contabilidad</option>
 							<option value="Ingresos">Ingresos</option>
-							<option value="Reembolos a los Clientes">Reembolsos a los Clientes</option>
+							<option value="Reembolsos a los Clientes">Reembolsos a los Clientes</option>
 						</select>	
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<label class="control-label">SubCategoria<text style="color:red">*</text></label>
-					<input class="form-control" name="subcategoria" id="subcategoria"  value="{{$transaccion->subcategoria}}" required="">
+					<input class="form-control" name="subcategoria" id="subcategoria"  value="" required="">
 				</div>
 				<div class="col-sm-4">
 					<label class="control-label">Codigo<text style="color:red">*</text></label>
-					<input class="form-control" name="codigo" id="codigo" value="{{$transaccion->codigo}}" required="">
+					<input class="form-control" name="codigo" id="codigo" value="" required="">
 				</div>
 			</div>
 
@@ -134,4 +134,15 @@
 		</div>
 	</div>
 </form>
-@stop
+@endsection
+
+@section('js')
+<script src="{{ asset("static/select2/select2.js") }}" type="text/javascript"></script>
+<script type="text/javascript">
+	 $(document).ready(function () {
+    	
+    	$("#proveedor").select2();
+    	$("#success").delay(2000).hide(600);
+    });
+</script>
+@endsection

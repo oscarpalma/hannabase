@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
-@section('page_heading','Actualizar Cantidad')
-@section('head')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="{{ asset('assets/scripts/barcode/JsBarcode.all.js') }}"></script>
+@extends('base')
+@section('cabezera','Actualizar Cantidad')
+@section('css')
+<link href="/static/select2/select2.css" rel="stylesheet">
+
 <script>
 		Number.prototype.zeroPadding = function(){
 			var ret = "" + this.valueOf();
@@ -30,13 +30,11 @@
   
   </style>
 @stop
-@section('section')
+@section('content')
 
 
 <div id="load">Espere un momento ...</div>
-<div class="container-fluid">
 
-	<div class="row">
 	
 		<div class="alert alert-danger alert-dismissible" role="alert" id="error" hidden="">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -49,7 +47,7 @@
 				
 			</div>
 		<div class="panel panel-primary"  id="material">
-			<div class="panel-heading"><strong>Actualizar Cantidad</strong></div>
+			<div class="panel-heading"></div>
 			<div class="panel-body">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -111,7 +109,7 @@
 
 
 				<br>
-				<hr>
+				
 				<div class="row">
 					
 				    <div class="form-group">
@@ -139,12 +137,14 @@
 			
 			</div>
 		</div>
-	</div>
-</div>
+	
 
 
 
-@section('scripts')
+
+@stop
+
+@section('js')
 
 
 <script type="text/javascript">
@@ -233,4 +233,3 @@ $( "#codigo" ).keypress(function( event ) {
 </script>
 
     @stop
-@stop

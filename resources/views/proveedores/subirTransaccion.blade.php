@@ -1,23 +1,26 @@
-@extends('layouts.dashboard')
-@section('page_heading','Subir Transacciones')
+@extends('base')
+@section('cabezera','Subir Transacciones')
 
-@section('section')
+@section('content')
 
 @if(isset($message))
-	<script type="text/javascript">
-		window.onload = function(){ alert("{{$message}}");}
-	</script>
+	
+	<div class="alert alert-success alert-dismissible" role="alert" id="success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></strong> {{$message}}
+				
+	</div>
 @endif
 
 <div class="container-fluid">
 	<div class="row">
 		<div class="panel panel-primary">
-			<div class="panel-heading"><strong>Subir Checadas</strong></div>
+			<div class="panel-heading"></div>
 			<div class="panel-body">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>¡Alerta!</strong> Hubo problemas para guardar los datos<br><br>
+				<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong> Hubo problemas para guardar los datos<br><br>
 				<ul>
 					@foreach ($errors->all() as $error)
 						<li>{{ $error }}</li>

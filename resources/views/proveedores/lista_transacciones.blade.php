@@ -1,10 +1,18 @@
-@extends('layouts.dashboard')
-@section('page_heading','Transacciones')
-@section('section')
+@extends('base')
+@section('cabezera','Transacciones')
+@section('content')
+@if(Session::has('success'))
+	<div class="alert alert-success alert-dismissible" role="alert" id="success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></strong> {{Session::get('success')}}
+				
+			</div>
+@endif
+ 
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('transacciones')}}">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><strong>Filtros</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">	
 			<div class="row-sm">					
@@ -32,11 +40,11 @@
 
 @if(isset($transacciones))
 	<h2>Resultados</h2>
-	<div class="tabla" >
+	<div class="tabla">
 		<table class="table table-striped table-bordered table-hover dataTable no-footer" border="2" width="100%" rules="rows" style='text-transform:uppercase;  ' id="tabla" >
 		    <thead>
 		        <th>ID</th>
-		        <th><center>Factura</center></th>
+		          <th><center>Factura</center></th>
 		        <th><center>Proveedor</center></th>
 		        <th><center>Concepto<center></th>
 		        <th><center>Semana</center></th>
@@ -72,13 +80,14 @@
 			        	<td>{{$transaccion->subcategoria}}</td>
 			        	<td>{{$transaccion->codigo}}</td>
 			        	<td><center>
+<a class="btn btn-success btn-sm btn-circle" href="{{ route('mostrarsaldo', $transaccion->id)}}" title="convertir saldo" ><i class="fa fa-share"></i></a>
 
-<a class="btn btn-success btn-sm" href="{{ route('mostrarsaldo', $transaccion->id)}}" title="convertir saldo" ><i class="fa fa-share"></i></a>
-
-<a class="btn btn-primary btn-sm" href="{{ route('proveedores/editar-transaccion',$transaccion->id) }}" title="editar" ><i class="fa fa-edit"></i></a>
 <br>
 
-			        		<a href="{{route('celiminar_transaccion', $transaccion->id)}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+<a class="btn btn-primary btn-sm btn-circle" href="{{ route('proveedores/editar-transaccion',$transaccion->id) }}" title="editar" ><i class="fa fa-edit"></i></a>
+<br>
+
+			        		<a href="{{route('celiminar_transaccion', $transaccion->id)}}" class="btn btn-danger btn-sm btn-circle"><i class="fa fa-trash"></i></a>
 			        	</center></td>
 			        </tr>
 			    @endforeach
@@ -87,21 +96,3 @@
 	</div>
 @endif
 @stop
-
-<script>
-	
-$(document).ready(function(){
-
-	
-	$("#seleccionarTodo").click(function(){
-		if($("seleccionarTodo").prop("checked")){
-			$(".select").prop("checked", true);
-		}else{
-			$(".select").prop("checked", false);
-		}
-	});
-
-});
-
-</script>
-

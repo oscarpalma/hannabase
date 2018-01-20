@@ -1,18 +1,14 @@
-@extends('layouts.dashboard')
-@section('page_heading','Modificar Transaccion')
-@section('section')
+@extends('base')
+@section('cabezera','Modificar Transaccion')
+@section('content')
 
-@if(Session::has('mensaje'))
-    <script type="text/javascript">
-        window.onload = function(){ alert("{{Session::get('mensaje')}}");}
-    </script>
-@endif
+
 
 
 <form class="form-horizontal" role="form" method="POST" action="{{route('proveedores/guardar-cambios',$transaccion->id)}}" >
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="panel panel-primary">
-		<div class="panel-heading"><strong>Datos</strong></div>
+		<div class="panel-heading"></div>
 		<div class="panel-body">
 			<div class="row-sm">					
 				<p>Campos marcados con <text style="color:red">*</text> son obligatorios.</p>
@@ -36,33 +32,6 @@
 				<div class="col-sm-4">
 					<label class="control-label">Concepto <text style="color:red">*</text></label>
 					<input class="form-control" name="concepto" required="" value="{{$transaccion->concepto}}">
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-4">
-				<label class="control-label">Categoria<text style="color:red">*</text></label>
-					<div>
-						<select class="form-control" name="categoria" id="categoria"  required="">
-							<option value="">SELECCIONAR</option>
-							<option value="Recursos Humanos">Recursos Humanos</option>
-							<option value="Logistica">Logistica</option>
-							<option value="Servicios Generales">Servicios Generales</option>
-							<option value="Sistemas">Sistemas</option>
-							<option value="Reclutamiento">Reclutamiento</option>
-							<option value="Contabilidad">Contabilidad</option>
-							<option value="Ingresos">Ingresos</option>
-							<option value="Reembolos a los Clientes">Reembolsos a los Clientes</option>
-						</select>	
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<label class="control-label">SubCategoria<text style="color:red">*</text></label>
-					<input class="form-control" name="subcategoria" id="subcategoria"  value="{{$transaccion->subcategoria}}" required="">
-				</div>
-				<div class="col-sm-4">
-					<label class="control-label">Codigo<text style="color:red">*</text></label>
-					<input class="form-control" name="codigo" id="codigo" value="{{$transaccion->codigo}}" required="">
 				</div>
 			</div>
 

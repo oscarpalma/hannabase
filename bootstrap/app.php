@@ -11,15 +11,9 @@
 |
 */
 
-/* Comentado para subir al hosting*/
 $app = new Illuminate\Foundation\Application(
 	realpath(__DIR__.'/../')
 );
-
-
-/*$app = new App\GoPublic(
- realpath(__DIR__.'/../')
-);*/
 
 /*
 |--------------------------------------------------------------------------

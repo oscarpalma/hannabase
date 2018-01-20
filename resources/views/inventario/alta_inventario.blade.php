@@ -1,17 +1,17 @@
-@extends('layouts.dashboard')
-@section('page_heading','Alta de Material')
-@section('head')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+@extends('base')
+@section('cabezera','Alta de Material')
+@section('css')
+<link href="/static/select2/select2.css" rel="stylesheet">
 
 @stop
-@section('section')
+@section('content')
 
 
 
 <div class="container-fluid">
 	<div class="row">
 		<div class="panel panel-primary">
-			<div class="panel-heading"><strong>Material</strong></div>
+			<div class="panel-heading"></div>
 			<div class="panel-body">
 			@if (count($errors) > 0)
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -102,9 +102,9 @@
 						</div>
 					</div>
 					   <div class="col-sm-4">
-						<label class="control-label">Foto <text style="color:red">*</text></label>
+						<label class="control-label">Foto </label>
 						<div >
-							<input type="file" class="form-control" name="image" id="image" required>
+							<input type="file" class="form-control" name="image" id="image">
 							
 						</div>	
 					</div>
@@ -115,7 +115,7 @@
 					  	<select class="form-control" id="area" name="area" required>
 					  		<option value="">Seleccione</option>
 					  		@foreach($areas as $area) 
-			        			<option value="{{ $area->idAreaCt }}">{{ $area->nombre }}</option>>
+			        			<option value="{{ $area->idArea }}">{{ $area->nombre }}</option>>
 			        		@endforeach
 					  	</select>
 					  </div>
@@ -180,7 +180,10 @@
 
 
 
-@section('scripts')
+
+@stop
+
+@section('js')
 
 
 <script type="text/javascript">
@@ -188,7 +191,7 @@
 $(document).ready(function(){	
 
 $( "#area" ).change(function() {
-  if ($("#area").val()=='24'){
+  if ($("#area").val()=='7'){
   	$("#sistemas").show();
   	
   	
@@ -221,4 +224,3 @@ $( "#tipo" ).change(function() {
 </script>
 
     @stop
-@stop

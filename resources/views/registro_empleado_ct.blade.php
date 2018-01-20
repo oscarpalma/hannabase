@@ -168,6 +168,16 @@ window.onload = function(){ alert("¡Empleado registrado exitosamente!");}
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-4">
+						<div class="form-group">
+							<div class="panel-body">
+							<label class="control-label">Fecha de Ingreso <text style="color:red">*</text></label>
+								<div >
+									<input class="form-control" type="date" name="fecha_ingreso" value="" required="">
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<hr>
